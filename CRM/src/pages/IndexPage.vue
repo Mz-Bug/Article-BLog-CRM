@@ -33,6 +33,7 @@
                   class="text-right"
                   color="primary"
                   label="+ New Article"
+                  to="/create_article"
                 />
               </q-item-section>
             </q-item>
@@ -206,7 +207,7 @@
                   <q-td :props="props">
                     <q-btn
                       flat
-                      size="sm"
+                      size="md"
                       color="primary"
                       icon="edit"
                       @click="share(props.row)"
@@ -215,7 +216,7 @@
                       class="q-pa-none"
                       color="red"
                       flat
-                      size="sm"
+                      size="md"
                       icon="delete"
                     />
                   </q-td>

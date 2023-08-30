@@ -31,7 +31,7 @@
           color="black"
           icon="person"
           icon-right="arrow_drop_down"
-          label="Jhon Deo"
+          label="Jhon Deo 1"
         >
           <q-menu>
             <q-list style="min-width: 150px">
