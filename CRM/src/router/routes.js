@@ -4,7 +4,9 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
+      { path: '', component: () => import('pages/IndexPage.vue') },
+      { path: '/profile', component: () => import('../components/ProfilePage.vue') },
+      { path: '/chat', component: () => import('../components/ChatBox.vue') }
     ]
   },
 
