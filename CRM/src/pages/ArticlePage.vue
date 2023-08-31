@@ -26,7 +26,10 @@
             <q-item class="q-pa-none">
               <q-item-section>
                 <p class="text-subtitle1 text-grey q-mb-none">Total Article</p>
-                <h4 class="q-ma-none">5</h4>
+
+                <h4 class="q-ma-none">
+                  {{ store.article ? store.article.length : 0 }}
+                </h4>
               </q-item-section>
               <q-item-section side>
                 <q-btn
@@ -38,21 +41,20 @@
               </q-item-section>
             </q-item>
 
-            <div class="q-mt-md">
+            <div class="q-mt-md" v-for="blog in store.article" :key="blog">
               <p class="text-subtitle1 text-weight-medium q-mb-none">
-                Tokopedia: How to increase user decision making on Event and
-                Entertainment - UI Case Study
+                {{ blog.Title }}: {{ blog.Content }}
               </p>
               <q-badge
                 class="q-pa-sm"
                 rounded
                 color="grey"
-                label="Case Study"
+                :label="blog.Description"
               />
 
               <q-item class="q-pa-none">
                 <p class="text-caption q-mt-md q-mb-none">
-                  Published on Aug 14
+                  Published on : {{ blog.created_at }}
                 </p>
                 <q-btn flat size="sm" color="grey" icon="ios_share" />
                 <q-btn
@@ -63,117 +65,7 @@
                   icon="more_horiz"
                 />
               </q-item>
-            </div>
-
-            <q-separator inset />
-
-            <div class="q-mt-md">
-              <p class="text-subtitle1 text-weight-medium q-mb-none">
-                8 UI Design Principle
-              </p>
-              <q-badge
-                class="q-pa-sm"
-                rounded
-                color="grey"
-                label="User Interface"
-              />
-
-              <q-item class="q-pa-none">
-                <p class="text-caption q-mt-md q-mb-none">
-                  Published on Aug 14
-                </p>
-                <q-btn flat size="sm" color="grey" icon="ios_share" />
-                <q-btn
-                  class="q-pa-none"
-                  color="grey"
-                  flat
-                  size="sm"
-                  icon="more_horiz"
-                />
-              </q-item>
-            </div>
-
-            <q-separator inset />
-
-            <div class="q-mt-md">
-              <p class="text-subtitle1 text-weight-medium q-mb-none">
-                Bad Bad UI: 10 Common Mistakes in User Interfaces
-              </p>
-              <q-badge
-                class="q-pa-sm"
-                rounded
-                color="grey"
-                label="Visual Design"
-              />
-
-              <q-item class="q-pa-none">
-                <p class="text-caption q-mt-md q-mb-none">
-                  Published on Aug 14
-                </p>
-                <q-btn flat size="sm" color="grey" icon="ios_share" />
-                <q-btn
-                  class="q-pa-none"
-                  color="grey"
-                  flat
-                  size="sm"
-                  icon="more_horiz"
-                />
-              </q-item>
-            </div>
-
-            <q-separator inset />
-
-            <div class="q-mt-md">
-              <p class="text-subtitle1 text-weight-medium q-mb-none">
-                Re-Designing for interface complexities to improve experience at
-                LN Capital— UI/UX Case Study Re-Designing for — UI/UX Case ...
-              </p>
-              <q-badge
-                class="q-pa-sm"
-                rounded
-                color="grey"
-                label="Case Study"
-              />
-
-              <q-item class="q-pa-none">
-                <p class="text-caption q-mt-md q-mb-none">
-                  Published on Aug 14
-                </p>
-                <q-btn flat size="sm" color="grey" icon="ios_share" />
-                <q-btn
-                  class="q-pa-none"
-                  color="grey"
-                  flat
-                  size="sm"
-                  icon="more_horiz"
-                />
-              </q-item>
-            </div>
-            <q-separator inset />
-
-            <div class="q-mt-md">
-              <p class="text-subtitle1 text-weight-medium q-mb-none">
-                Bad Bad Bad UX: 20 Common Mistakes in User Experience
-              </p>
-              <q-badge
-                class="q-pa-sm"
-                rounded
-                color="grey"
-                label="Case Study"
-              />
-              <q-item class="q-pa-none">
-                <p class="text-caption q-mt-md q-mb-none">
-                  Published on Aug 14
-                </p>
-                <q-btn flat size="sm" color="grey" icon="ios_share" />
-                <q-btn
-                  class="q-pa-none"
-                  color="grey"
-                  flat
-                  size="sm"
-                  icon="more_horiz"
-                />
-              </q-item>
+              <q-separator inset />
             </div>
           </q-tab-panel>
 
@@ -181,13 +73,16 @@
             <q-item class="q-pa-none">
               <q-item-section>
                 <p class="text-subtitle1 text-grey q-mb-none">Total Category</p>
-                <h4 class="q-ma-none">5</h4>
+                <h4 class="q-ma-none">
+                  {{ store.category ? store.category.length : 0 }}
+                </h4>
               </q-item-section>
               <q-item-section side>
                 <q-btn
                   class="text-right"
                   color="primary"
                   label="+ New Category"
+                  @click="add_cetogory = true"
                 />
               </q-item-section>
             </q-item>
@@ -196,12 +91,9 @@
               <q-table
                 flat
                 bordered
-                :rows="rows"
+                :rows="store.category"
                 :columns="columns"
                 row-key="name"
-                :selected-rows-label="getSelectedString"
-                selection="multiple"
-                v-model:selected="selected"
               >
                 <template v-slot:body-cell-action="props">
                   <q-td :props="props">
@@ -210,7 +102,7 @@
                       size="md"
                       color="primary"
                       icon="edit"
-                      @click="share(props.row)"
+                      @click="EditRow(props.row)"
                     />
                     <q-btn
                       class="q-pa-none"
@@ -231,19 +123,69 @@
         </q-tab-panels>
       </q-card>
     </div>
+    <q-dialog v-model="add_cetogory">
+      <q-card style="width: 600px; max-width: 60vw">
+        <q-card-section>
+          <div class="text-h6">
+            Add new Category
+            <q-btn
+              round
+              flat
+              dense
+              icon="close"
+              class="float-right"
+              color="grey-8"
+              v-close-popup
+            ></q-btn>
+          </div>
+        </q-card-section>
+        <q-separator inset></q-separator>
+        <q-card-section class="q-pt-none">
+          <q-form class="q-gutter-md">
+            <q-list>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-body1 q-my-md"
+                    >Category Name</q-item-label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    v-model="categoryy"
+                    placeholder="Category Name"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-form>
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-teal">
+          <q-btn
+            class="q-mx-md q-mb-md"
+            label="Save"
+            type="submit"
+            color="primary"
+            v-close-popup
+            @click="add_new_category"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useCounterStore } from "src/stores/example-store";
 const columns = [
   {
     name: "number",
     required: true,
-    label: "No",
+    label: "Id",
     align: "left",
-    field: (row) => row.number,
+    field: (row) => row.id,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -252,7 +194,16 @@ const columns = [
     required: true,
     label: "Name",
     align: "left",
-    field: (row) => row.name,
+    field: (row) => row.Name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "create",
+    required: true,
+    label: "Created At",
+    align: "left",
+    field: (row) => row.created_at,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -266,50 +217,41 @@ const columns = [
   ,
 ];
 
-const rows = [
-  {
-    number: 1,
-    name: "Case Study",
-  },
-  {
-    number: 2,
-    name: "Visual Design",
-  },
-  {
-    number: 3,
-    name: "User Interface",
-  },
-  {
-    number: 4,
-    name: "User Experience",
-  },
-  {
-    number: 5,
-    name: "UI/UX",
-  },
-];
 export default defineComponent({
   name: "IndexPage",
-
   setup() {
     const selected = ref([]);
+    const store = useCounterStore();
+    const categoryy = ref("");
+    const add_cetogory = ref(false);
+    function EditRow(row) {
+      add_cetogory.value = true;
+      categoryy.value = row.Name;
+    }
+    function add_new_category() {
+      let category = {
+        Name: categoryy.value,
+      };
+      store.Add_new_Category(category);
+    }
+    onMounted(() => {
+      store.Get_Article();
+      store.Get_All_Category();
+    });
     return {
       tab: ref("article"),
       selected,
       columns,
-      rows,
-
+      store,
+      add_cetogory,
+      add_new_category,
+      categoryy,
       share(row) {
         // Implement your logic to share the row's action
         console.log("Sharing action for row:", row);
       },
-      getSelectedString() {
-        return selected.value.length === 0
-          ? ""
-          : `${selected.value.length} record${
-              selected.value.length > 1 ? "s" : ""
-            } selected of ${rows.length}`;
-      },
+
+      EditRow,
     };
   },
 });
