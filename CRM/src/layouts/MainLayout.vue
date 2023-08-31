@@ -130,23 +130,12 @@ const menu = [
     name: "Chat ",
     route: "/chat",
   },
-  
 ];
 const other = [
-  {
-    icon: "eva-settings-2-outline",
-    name: "Settings",
-    route: "/settings",
-  },
   {
     icon: "eva-person-outline",
     name: "Account",
     route: "/accounts",
-  },
-  {
-    icon: "eva-question-mark-circle-outline",
-    name: "Helps",
-    route: "/helps",
   },
 ];
 export default {

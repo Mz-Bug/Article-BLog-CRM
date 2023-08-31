@@ -35,29 +35,6 @@ export default route(function (/* { store, ssrContext } */) {
       process.env.MODE === "ssr" ? void 0 : process.env.VUE_ROUTER_BASE
     ),
   });
-  // Router.beforeEach((to, from, next) => {
-  //   const token = localStorage.getItem("token");
-
-  //   if (to.matched.some((record) => record.meta.requiresAuth)) {
-  //     // This route requires auth, check if the token exists
-  //     if (!token) {
-  //       // If not logged in, redirect to login page with redirect query
-  //       next({
-  //         path: "/",
-  //         // query: { redirect: to.fullPath },
-  //       });
-  //     } else {
-  //       // If logged in, proceed to the destination
-  //       if(to.matched.some((record) => record.meta.AdminrequiresAuth))
-  //       next({
-  //        path: "/"
-  //       });
-  //     }
-  //   } else {
-  //     // If no authentication is required, proceed to the destination
-  //     next();
-  //   }
-  // });
   Router.beforeEach((to, from, next) => {
     // const token = localStorage.getItem("token");
     const store = useCounterStore(); // Assuming this gets your store instance

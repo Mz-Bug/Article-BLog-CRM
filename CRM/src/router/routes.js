@@ -1,13 +1,13 @@
 const routes = [
-  
   {
     path: "/",
     component: () => import("layouts/LoginLayout.vue"),
-    children: [{ path: "", component: () => import("pages/LoginPage.vue") },
-    { path: "/signup", component: () => import("../pages/SignUpPage.vue") },
-  ],
+    children: [
+      { path: "", component: () => import("pages/LoginPage.vue") },
+      { path: "/signup", component: () => import("../pages/SignUpPage.vue") },
+    ],
   },
-  
+
   {
     path: "/admin-dashboard",
     meta: { role: "admin" },
@@ -15,7 +15,19 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("pages/DashBoard.vue"),
+        component: () => import("pages/Admin/DashBoard.vue"),
+      },
+      {
+        path: "/user",
+        component: () => import("pages/Admin/UserPage.vue"),
+      },
+      {
+        path: "/role",
+        component: () => import("pages/Admin/RolePage.vue"),
+      },
+      {
+        path: "/permission",
+        component: () => import("pages/Admin/PermissionPage.vue"),
       },
     ],
   },
@@ -34,18 +46,15 @@ const routes = [
       },
       { path: "/chat", component: () => import("../components/ChatBox.vue") },
       { path: "/dashboard", component: () => import("pages/DashBoard.vue") },
-      { path: "/article", component: () => import("pages/IndexPage.vue") },
-      
+      { path: "/article", component: () => import("pages/ArticlePage.vue") },
       {
         path: "/create_article",
         component: () => import("../components/CreateArticle.vue"),
       },
-      { path: "/settings", component: () => import("pages/SettingPage.vue") },
       {
         path: "/accounts",
         component: () => import("../components/ProfilePage.vue"),
       },
-      { path: "/helps", component: () => import("pages/HelpsPage.vue") },
     ],
   },
 

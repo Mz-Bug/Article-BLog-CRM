@@ -31,7 +31,7 @@
           color="black"
           icon="person"
           icon-right="arrow_drop_down"
-          label="Jhon Deo 1"
+          label="Jhon Deo"
         >
           <q-menu>
             <q-list style="min-width: 150px">
@@ -47,17 +47,16 @@
         </q-btn>
       </q-toolbar>
     </q-header>
-
     <q-drawer
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
       bordered
-      style="background-color: #f1f3f8"
+      style="background-color: #5041bc"
     >
       <!-- drawer content -->
       <q-list padding class="rounded-borders" style="max-width: 350px">
-        <q-item-label header>MENU</q-item-label>
+        <q-item-label header class="text-white">MENU</q-item-label>
         <q-item
           clickable
           class="q-mx-md"
@@ -68,37 +67,20 @@
         >
           <q-item-section avatar>
             <q-icon
-              :style="{ color: activeIndex === index ? '#FFFFFF' : '#9dacbe' }"
+              :style="{ color: activeIndex === index ? '#5041BC' : 'white' }"
               :name="item.icon"
               size="sm"
             />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-body1">{{ item.name }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item-label header>OTHERS</q-item-label>
-        <q-item
-          clickable
-          class="q-mx-md"
-          v-for="(item, index) in other"
-          :key="'other_' + index"
-          :class="{ active: activeIndex === index + menu.length }"
-          @click="activateItem(index + menu.length, item.route)"
-        >
-          <q-item-section avatar>
-            <q-icon
-              :style="{
-                color:
-                  activeIndex === index + menu.length ? '#FFFFFF' : '#9dacbe',
-              }"
-              :name="item.icon"
-              size="sm"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-body1">{{ item.name }}</q-item-label>
+            <q-item-label
+              :class="
+                activeIndex === index
+                  ? 'text-body1 text-deep-purple-14'
+                  : 'text-body1 text-white'
+              "
+              >{{ item.name }}</q-item-label
+            >
           </q-item-section>
         </q-item>
       </q-list>
@@ -111,7 +93,6 @@
 </template>
 
 <script>
-import { LocalStorage } from "quasar";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 const menu = [
@@ -121,33 +102,22 @@ const menu = [
     route: "/dashboard",
   },
   {
-    icon: "eva-file-text-outline",
-    name: "Article",
-    route: "/article",
+    icon: "eva-people-outline",
+    name: "Users ",
+    route: "/user",
   },
   {
-    icon: "eva-message-circle-outline",
-    name: "Chat ",
-    route: "/chat",
+    icon: "eva-award-outline",
+    name: "Role ",
+    route: "/role",
+  },
+  {
+    icon: "eva-shield-outline",
+    name: "Permission",
+    route: "/permission",
   },
 ];
-const other = [
-  {
-    icon: "eva-settings-2-outline",
-    name: "Settings",
-    route: "/settings",
-  },
-  {
-    icon: "eva-person-outline",
-    name: "Account",
-    route: "/accounts",
-  },
-  {
-    icon: "eva-question-mark-circle-outline",
-    name: "Helps",
-    route: "/helps",
-  },
-];
+
 export default {
   setup() {
     const route = useRouter();
@@ -169,7 +139,7 @@ export default {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       menu,
-      other,
+
       logout,
     };
   },
@@ -177,11 +147,16 @@ export default {
 </script>
 <style>
 .active {
-  background-color: #002ed0; /* Set the desired background color for the active item */
-  color: white; /* Set the text color for the active item */
+  background-color: white; /* Set the desired background color for the active item */
+  color: #04103b; /* Set the text color for the active item */
+  border-radius: 20px;
 }
-.activeother {
-  background-color: #002ed0; /* Set the desired background color for the active item */
-  color: white; /* Set the text color for the active item */
+.active:hover {
+  background-color: white; /* Set the desired background color for the active item */
+  color: #04103b; /* Set the text color for the active item */
+  border-radius: 20px;
+}
+.q-drawer.q-drawer--left.q-drawer--standard.q-drawer--bordered {
+  border-right: none;
 }
 </style>
