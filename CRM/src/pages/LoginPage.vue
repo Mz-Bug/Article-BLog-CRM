@@ -10,7 +10,7 @@
           <q-btn no-caps unelevated class="text-black">
             <q-img :src="require('assets/google.svg')" style="width: 20px">
             </q-img>
-            <span class="q-pl-sm">Sign in with Google</span>
+            <span class="q-pl-sm">Login with Google</span>
           </q-btn>
           <q-btn
             no-caps
@@ -20,7 +20,7 @@
           >
             <q-img :src="require('assets/facebook.svg')" style="width: 20px">
             </q-img>
-            <span class="q-pl-sm">Sign in with Facebook</span>
+            <span class="q-pl-sm">Login with Facebook</span>
           </q-btn>
         </div>
       </q-card-actions>
@@ -102,6 +102,7 @@
             no-caps
             class="full-width text-purple"
             label="Create an Account"
+            to="/signup"
           />
         </q-card-actions>
       </q-form>

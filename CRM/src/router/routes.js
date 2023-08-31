@@ -1,9 +1,13 @@
 const routes = [
+  
   {
     path: "/",
     component: () => import("layouts/LoginLayout.vue"),
-    children: [{ path: "", component: () => import("pages/LoginPage.vue") }],
+    children: [{ path: "", component: () => import("pages/LoginPage.vue") },
+    { path: "/signup", component: () => import("../pages/SignUpPage.vue") },
+  ],
   },
+  
   {
     path: "/admin-dashboard",
     meta: { role: "admin" },
@@ -31,6 +35,7 @@ const routes = [
       { path: "/chat", component: () => import("../components/ChatBox.vue") },
       { path: "/dashboard", component: () => import("pages/DashBoard.vue") },
       { path: "/article", component: () => import("pages/IndexPage.vue") },
+      
       {
         path: "/create_article",
         component: () => import("../components/CreateArticle.vue"),

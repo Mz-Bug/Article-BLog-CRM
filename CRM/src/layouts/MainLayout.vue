@@ -130,6 +130,7 @@ const menu = [
     name: "Chat ",
     route: "/chat",
   },
+  
 ];
 const other = [
   {

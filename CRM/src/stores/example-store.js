@@ -4,7 +4,7 @@ import { api } from "src/boot/axios";
 
 export const useCounterStore = defineStore("counter", {
   state: () => ({
-    userRole: "admin",
+    userRole: "user",
   }),
   getters: {
     doubleCount: (state) => state.counter * 2,
