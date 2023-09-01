@@ -2,8 +2,8 @@
   <q-page class="q-pa-lg">
     <q-card>
       <q-table
-        title="Users"
-        :rows="rows"
+        title="Roles"
+        :rows="store.User"
         :hide-header="mode === 'grid'"
         :columns="columns"
         row-key="name"
@@ -149,53 +149,156 @@
         </q-card-section>
         <q-separator inset></q-separator>
         <q-card-section class="q-pt-none">
-          <q-form class="q-gutter-md">
-            <q-list>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">First Name</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="fname"
-                    placeholder="User Name"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Last name </q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="lname"
-                    placeholder="Last Name"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Email</q-item-label>
-                  <q-input dense outlined v-model="email" placeholder="Email" />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Phone Number</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="phone"
-                    type="tel"
-                    placeholder="Phone Number"
-                  >
-                  </q-input>
-                </q-item-section>
-              </q-item>
-            </q-list>
+          <q-form @submit="SignUp">
+            <q-card-section>
+              <q-select
+                dense
+                class="full-width"
+                filled
+                v-model="cetgorymodel"
+                label="Select Role"
+                :options="store.roles"
+                style="width: 250px"
+                behavior="menu"
+                option-label="name"
+                emit-value
+              />
+            </q-card-section>
+            <q-card-section>
+              <!-- input firstname lastname  -->
+              <div class="row q-gutter-sm">
+                <q-input
+                  class="q-mt-xs col"
+                  dense
+                  outlined
+                  v-model="firstName"
+                  label="First Name"
+                  type="text"
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]"
+                >
+                </q-input>
+                <q-input
+                  class="q-mt-xs col"
+                  dense
+                  outlined
+                  v-model="lastName"
+                  label="Last Name"
+                  type="text"
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]"
+                >
+                </q-input>
+              </div>
+
+              <!-- input age -->
+              <div>
+                <q-input
+                  class="q-mt-xs"
+                  dense
+                  outlined
+                  type="number"
+                  v-model="age"
+                  label="Age"
+                  lazy-rules
+                  :rules="[
+                    (val) =>
+                      (val !== null && val !== '') || 'Please type your age',
+                    (val) =>
+                      (val > 0 && val < 1000) || 'Please type a real age',
+                  ]"
+                />
+              </div>
+
+              <!-- input email -->
+              <div>
+                <q-input
+                  class="q-mt-xs"
+                  dense
+                  outlined
+                  v-model="email"
+                  label="Email"
+                  type="text"
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="mail" />
+                  </template>
+                </q-input>
+              </div>
+
+              <!-- input phone and profile picture  -->
+              <div class="row q-gutter-sm">
+                <q-input
+                  class="q-mt-xs col"
+                  dense
+                  outlined
+                  v-model="phone"
+                  label="Phone"
+                  type="phone"
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="phone_iphone" />
+                  </template>
+                </q-input>
+              </div>
+
+              <!-- input password -->
+              <div>
+                <q-input
+                  class="q-mt-xs"
+                  label="Password"
+                  dense
+                  outlined
+                  v-model="password1"
+                  :type="passwordFieldType"
+                  :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="eva-lock-outline" color="blue-grey-4" />
+                  </template>
+                  <template v-slot:append>
+                    <q-icon
+                      :name="
+                        passwordFieldType === 'password'
+                          ? 'eva-eye-off-outline'
+                          : 'eva-eye-outline'
+                      "
+                      color="blue-grey-4"
+                      @click="togglePasswordVisibility"
+                      style="cursor: pointer"
+                    />
+                  </template>
+                </q-input>
+              </div>
+
+              <!-- terms and conditions chexkbox -->
+              <q-checkbox
+                v-model="purple"
+                label="I agree Terms and conditions"
+                color="teal"
+              />
+            </q-card-section>
+
+            <!-- Sign up button -->
+
+            <!-- login button for existing account -->
           </q-form>
         </q-card-section>
-
         <q-card-actions align="right" class="text-teal">
           <q-btn
             class="q-mx-md q-mb-md"
@@ -203,11 +306,77 @@
             type="submit"
             color="primary"
             v-close-popup
-            @click="adduser"
+            @click="addRole"
           />
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="edit_role">
+      <q-card style="width: 600px; max-width: 60vw">
+        <q-card-section>
+          <div class="text-h6">
+            Add new Role
+            <q-btn
+              round
+              flat
+              dense
+              icon="close"
+              class="float-right"
+              color="grey-8"
+              v-close-popup
+            ></q-btn>
+          </div>
+        </q-card-section>
+        <q-separator inset></q-separator>
+        <q-card-section class="q-pt-none">
+          <q-form>
+            <q-list>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-py-sm">User Role</q-item-label>
+                  <q-input
+                    dense
+                    outlined
+                    v-model="fname"
+                    placeholder="Enter User Role"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item class="q-pt-none">
+                <q-item-section>
+                  <q-item-label class="q-pb-sm">Role Description</q-item-label>
+                  <q-input
+                    dense
+                    outlined
+                    v-model="lname"
+                    placeholder="Enter Role Description"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-form>
+        </q-card-section>
+        <q-card-actions align="right" class="text-teal">
+          <q-btn
+            class="q-mx-md q-mb-md"
+            label="Save"
+            type="submit"
+            color="primary"
+            v-close-popup
+            @click="update_role"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <q-dialog v-model="show">
       <q-card>
         <q-card-section class="q-pa-md">
@@ -231,12 +400,13 @@
 
 <script>
 import { exportFile } from "quasar";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useQuasar } from "quasar";
+import { useCounterStore } from "../../stores/example-store";
 const columns = [
   {
     name: "first_name",
-    label: "User Name",
+    label: "First Name",
     align: "left",
     field: "first_name",
   },
@@ -254,9 +424,19 @@ const columns = [
   },
   {
     name: "phone",
-    align: "center",
+    align: "left",
     label: "Phone Number",
     field: "phone",
+  },
+  {
+    name: "created_at",
+    align: "center",
+    label: "Created At",
+    field: "created_at",
+    format: (val) => {
+      const date = new Date(val);
+      return date.toISOString().split("T")[0];
+    },
   },
   {
     name: "action",
@@ -265,94 +445,22 @@ const columns = [
     field: "action",
   },
 ];
-const rows = ref([
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "maaz",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-]);
 export default {
   setup() {
+    const store = useCounterStore();
+    const rows = ref(store.User);
     const filter = ref("");
-    const fname = ref("");
-    const lname = ref("");
+    const firstName = ref("");
+    const lastName = ref("");
+    const age = ref("");
     const email = ref("");
     const phone = ref("");
+    const password1 = ref("");
+    const purple = ref(false);
     const customer = ref({});
     const new_customer = ref(false);
+    const edit_role = ref(false);
+    const cetgorymodel = ref(null);
     const mode = ref("list");
     const $q = useQuasar();
     const show = ref(false);
@@ -399,26 +507,32 @@ export default {
     function new_user() {
       new_customer.value = true;
     }
-    function adduser() {
-      let user = {
-        first_name: fname.value,
-        last_name: lname.value,
-        email: email.value,
-        phone: phone.value,
-      };
-      rows.value.unshift(user);
-      fname.value = "";
-      lname.value = "";
-      email.value = "";
-      phone.value = "";
+    function addRole() {
+      if (cetgorymodel.value) {
+        const formData = new FormData();
+        formData.append("role_id", cetgorymodel.value.id);
+        formData.append("first_name", firstName.value);
+        formData.append("last_name", lastName.value);
+        formData.append("age", age.value);
+        formData.append("email", email.value);
+        formData.append("phone", phone.value);
+        // formData.append("profile_image", profilePicture.value);
+        formData.append("bio", "this is a sample bio");
+        formData.append("description", "this is a sample bio description");
+        formData.append("password", password1.value);
+
+        store.New_Use(formData); // Use uppercase 'Id' for the category ID
+      } else {
+        // Handle case where category is not selected
+        console.log("Please select a category");
+      }
     }
     function EditRow(row) {
       console.log(row);
-      new_customer.value = true;
-      fname.value = row.first_name;
-      lname.value = row.last_name;
-      email.value = row.email;
-      phone.value = row.phone;
+      edit_role.value = true;
+      fname.value = row.name;
+      lname.value = row.description;
+      rowData = row;
     }
     function deleteRow(row) {
       show.value = true;
@@ -426,15 +540,23 @@ export default {
       rowData = row;
     }
     function confirmDelete() {
-      console.log("maaz");
-      console.log(rowData);
-      const rowName = rowData.first_name;
-      const index = rows.value.findIndex((item) => item.first_name === rowName);
+      // console.log(rowData.id);
+      store.Delete_Role(rowData.id);
+    }
+    onMounted(() => {
+      store.GET_User();
+      store.GET_Roles();
+    });
+    function update_role() {
+      const formData = new FormData();
+      formData.append("id", rowData.id);
+      formData.append("name", fname.value);
+      formData.append("description", lname.value);
 
-      if (index !== -1) {
-        rows.value.splice(index, 1);
-        console.log(index); // Remove the row at the specified index
-      }
+      store.Update_Role(formData);
+
+      fname.value = "";
+      lname.value = "";
     }
     return {
       filter,
@@ -453,11 +575,10 @@ export default {
       wrapCsvValue,
       exportTable,
       new_user,
-      fname,
-      lname,
+      purple,
       email,
       phone,
-      adduser,
+      addRole,
       visibleColumns: ref([
         "first_name",
         "last_name",
@@ -470,6 +591,14 @@ export default {
       show,
       confirmDelete,
       rowData,
+      store,
+      edit_role,
+      update_role,
+      firstName,
+      lastName,
+      age,
+      password1,
+      cetgorymodel,
     };
   },
 };

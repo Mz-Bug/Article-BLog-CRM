@@ -172,6 +172,55 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="edit_cetogory">
+      <q-card style="width: 600px; max-width: 60vw">
+        <q-card-section>
+          <div class="text-h6">
+            Add new Category
+            <q-btn
+              round
+              flat
+              dense
+              icon="close"
+              class="float-right"
+              color="grey-8"
+              v-close-popup
+            ></q-btn>
+          </div>
+        </q-card-section>
+        <q-separator inset></q-separator>
+        <q-card-section class="q-pt-none">
+          <q-form class="q-gutter-md">
+            <q-list>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-body1 q-my-md"
+                    >Category Name</q-item-label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    v-model="editcategoryy"
+                    placeholder="Category Name"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-form>
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-teal">
+          <q-btn
+            class="q-mx-md q-mb-md"
+            label="Save"
+            type="submit"
+            color="primary"
+            v-close-popup
+            @click="update_category"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -224,9 +273,16 @@ export default defineComponent({
     const store = useCounterStore();
     const categoryy = ref("");
     const add_cetogory = ref(false);
+    const edit_cetogory = ref(false);
+    const editcategoryy = ref("");
+    const rowData = null;
     function EditRow(row) {
-      add_cetogory.value = true;
-      categoryy.value = row.Name;
+      edit_cetogory.value = true;
+      editcategoryy.value = row.Name;
+      store.update = row;
+    }
+    function update_category() {
+      // store.Update_category(store.update);
     }
     function add_new_category() {
       let category = {
@@ -252,6 +308,10 @@ export default defineComponent({
       },
 
       EditRow,
+      rowData,
+      edit_cetogory,
+      editcategoryy,
+      update_category,
     };
   },
 });

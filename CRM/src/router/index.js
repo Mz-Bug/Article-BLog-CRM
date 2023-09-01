@@ -41,14 +41,14 @@ export default route(function (/* { store, ssrContext } */) {
     const requiresAuth = to.matched.some((record) => record.meta.role);
 
     if (requiresAuth) {
-      if (store.userRole === "user") {
-        if (to.meta.role === "user") {
+      if (store.userRole === "admin") {
+        if (to.meta.role === "admin") {
           next();
         } else {
           next("/user-dashboard");
         }
-      } else if (store.userRole === "admin") {
-        if (to.meta.role === "admin") {
+      } else if (store.userRole === "root") {
+        if (to.meta.role === "root") {
           next();
         } else {
           next("/admin-dashboard");

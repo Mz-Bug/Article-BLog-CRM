@@ -125,11 +125,11 @@ export default {
         passwordFieldType.value === "password" ? "text" : "password";
     }
     function login() {
-      let data = {
-        username: email.value,
-        password: password1.value,
-      };
-      store.User_Login(data);
+      const formData = new FormData();
+      formData.append("email", email.value);
+      formData.append("password", password1.value);
+
+      store.User_Login(formData);
     }
     return {
       email,

@@ -2,6 +2,7 @@
   <div class="q-gutter-sm">
     <q-editor
       v-model="qeditor"
+      @input="onEditorInput"
       :dense="$q.screen.lt.md"
       :toolbar="[
         [
@@ -82,17 +83,22 @@
     />
   </div>
 </template>
-
 <script>
-import { ref } from "vue";
+import { ref, watch, defineEmits } from "vue";
 
 export default {
-  setup() {
+  emits: ["update:modelValue"], // Declare the emitted event
+
+  setup(_, { emit }) {
+    const qeditor = ref("");
+
+    // Emit the qeditor value whenever it changes
+    watch(qeditor, (newValue) => {
+      emit("update:modelValue", newValue);
+    });
+
     return {
-      qeditor: ref(
-        "<pre>Check out the two different types of dropdowns" +
-          ' in each of the "Align" buttons.</pre> '
-      ),
+      qeditor,
     };
   },
 };

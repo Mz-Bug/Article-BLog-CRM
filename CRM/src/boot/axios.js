@@ -28,10 +28,11 @@ import { boot } from "quasar/wrappers";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://a3c2-72-255-39-45.ngrok-free.app",
+  baseURL: "https://8610-121-91-38-64.ngrok-free.app/",
   headers: {
     "Content-Type": "application/json",
     "ngrok-skip-browser-warning": "afsd",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
   },
 });
 

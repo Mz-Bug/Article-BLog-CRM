@@ -10,7 +10,7 @@ const routes = [
 
   {
     path: "/admin-dashboard",
-    meta: { role: "admin" },
+    meta: { role: "root" },
     component: () => import("layouts/AdminLayout.vue"),
     children: [
       {
@@ -33,7 +33,7 @@ const routes = [
   },
   {
     path: "/user-dashboard",
-    meta: { role: "user" },
+    meta: { role: "admin" },
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {

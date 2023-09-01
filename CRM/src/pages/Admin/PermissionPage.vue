@@ -3,7 +3,7 @@
     <q-card>
       <q-table
         title="Permissions"
-        :rows="rows"
+        :rows="store.Permissions"
         :hide-header="mode === 'grid'"
         :columns="columns"
         row-key="name"
@@ -135,7 +135,7 @@
       <q-card style="width: 600px; max-width: 60vw">
         <q-card-section>
           <div class="text-h6">
-            Add new User
+            Add new Permissions
             <q-btn
               round
               flat
@@ -149,53 +149,43 @@
         </q-card-section>
         <q-separator inset></q-separator>
         <q-card-section class="q-pt-none">
-          <q-form class="q-gutter-md">
+          <q-form>
             <q-list>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">First Name</q-item-label>
+                  <q-item-label class="q-py-sm">User Permission</q-item-label>
                   <q-input
                     dense
                     outlined
                     v-model="fname"
-                    placeholder="User Name"
+                    placeholder="Enter User Permission"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
                   />
                 </q-item-section>
               </q-item>
-              <q-item>
+              <q-item class="q-pt-none">
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Last name </q-item-label>
+                  <q-item-label class="q-pb-sm"
+                    >Permission Description</q-item-label
+                  >
                   <q-input
                     dense
                     outlined
                     v-model="lname"
-                    placeholder="Last Name"
+                    placeholder="Enter Permission Description"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
                   />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Email</q-item-label>
-                  <q-input dense outlined v-model="email" placeholder="Email" />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Phone Number</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="phone"
-                    type="tel"
-                    placeholder="Phone Number"
-                  >
-                  </q-input>
                 </q-item-section>
               </q-item>
             </q-list>
           </q-form>
         </q-card-section>
-
         <q-card-actions align="right" class="text-teal">
           <q-btn
             class="q-mx-md q-mb-md"
@@ -203,7 +193,7 @@
             type="submit"
             color="primary"
             v-close-popup
-            @click="adduser"
+            @click="addRole"
           />
         </q-card-actions>
       </q-card>
@@ -226,37 +216,113 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="edit_role">
+      <q-card style="width: 600px; max-width: 60vw">
+        <q-card-section>
+          <div class="text-h6">
+            Add new Permission
+            <q-btn
+              round
+              flat
+              dense
+              icon="close"
+              class="float-right"
+              color="grey-8"
+              v-close-popup
+            ></q-btn>
+          </div>
+        </q-card-section>
+        <q-separator inset></q-separator>
+        <q-card-section class="q-pt-none">
+          <q-form>
+            <q-list>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-py-sm">Update Permission</q-item-label>
+                  <q-input
+                    dense
+                    outlined
+                    v-model="fname"
+                    placeholder="Enter User Role"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item class="q-pt-none">
+                <q-item-section>
+                  <q-item-label class="q-pb-sm"
+                    >Permission Description</q-item-label
+                  >
+                  <q-input
+                    dense
+                    outlined
+                    v-model="lname"
+                    placeholder="Enter Role Description"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-form>
+        </q-card-section>
+        <q-card-actions align="right" class="text-teal">
+          <q-btn
+            class="q-mx-md q-mb-md"
+            label="Save"
+            type="submit"
+            color="primary"
+            v-close-popup
+            @click="update_role"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import { exportFile } from "quasar";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
+import { useCounterStore } from "../../stores/example-store";
 const columns = [
   {
     name: "first_name",
-    label: "User Name",
+    label: "Permission Id",
     align: "left",
-    field: "first_name",
+    field: "access_control_id",
   },
   {
     name: "last_name",
     align: "left",
-    label: "Last Name",
-    field: "last_name",
+    label: "Permission Name",
+    field: "name",
   },
   {
     name: "email",
     align: "center",
-    label: "Email",
-    field: "email",
+    label: "Description",
+    field: "description",
+    format: (val) => {
+      const words = val.split(" ");
+      return words.slice(0, 4).join(" ");
+    },
   },
   {
     name: "phone",
     align: "center",
-    label: "Phone Number",
-    field: "phone",
+    label: "Created At",
+    field: "created_at",
+    format: (val) => {
+      const date = new Date(val);
+      return date.toISOString().split("T")[0];
+    },
   },
   {
     name: "action",
@@ -265,87 +331,88 @@ const columns = [
     field: "action",
   },
 ];
-const rows = ref([
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "maaz",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-]);
+// const rows = ref([
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "Dr. Jada Conolly",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+//   {
+//     first_name: "maaz",
+//     last_name: "GILBERT",
+//     email: "jhon@gmail.com",
+//     phone: "02354645767",
+//     action: "",
+//   },
+// ]);
 export default {
   setup() {
+    const store = useCounterStore();
     const filter = ref("");
     const fname = ref("");
     const lname = ref("");
@@ -353,6 +420,7 @@ export default {
     const phone = ref("");
     const customer = ref({});
     const new_customer = ref(false);
+    const edit_role = ref(false);
     const mode = ref("list");
     const $q = useQuasar();
     const show = ref(false);
@@ -399,26 +467,35 @@ export default {
     function new_user() {
       new_customer.value = true;
     }
-    function adduser() {
-      let user = {
-        first_name: fname.value,
-        last_name: lname.value,
-        email: email.value,
-        phone: phone.value,
-      };
-      rows.value.unshift(user);
+    function addRole() {
+      const formData = new FormData();
+      formData.append("name", fname.value);
+      formData.append("description", lname.value);
+
+      store.New_permission(formData);
+
       fname.value = "";
       lname.value = "";
-      email.value = "";
-      phone.value = "";
     }
+    // function adduser() {
+    //   let user = {
+    //     first_name: fname.value,
+    //     last_name: lname.value,
+    //     email: email.value,
+    //     phone: phone.value,
+    //   };
+    //   rows.value.unshift(user);
+    //   fname.value = "";
+    //   lname.value = "";
+    //   email.value = "";
+    //   phone.value = "";
+    // }
     function EditRow(row) {
       console.log(row);
-      new_customer.value = true;
-      fname.value = row.first_name;
-      lname.value = row.last_name;
-      email.value = row.email;
-      phone.value = row.phone;
+      edit_role.value = true;
+      fname.value = row.name;
+      lname.value = row.description;
+      rowData = row;
     }
     function deleteRow(row) {
       show.value = true;
@@ -426,23 +503,30 @@ export default {
       rowData = row;
     }
     function confirmDelete() {
-      console.log("maaz");
-      console.log(rowData);
-      const rowName = rowData.first_name;
-      const index = rows.value.findIndex((item) => item.first_name === rowName);
+      store.Delete_Role(rowData.access_control_id);
+    }
+    onMounted(() => {
+      store.GET_permission();
+    });
+    function update_role() {
+      const formData = new FormData();
+      formData.append("id", rowData.access_control_id);
+      formData.append("name", fname.value);
+      formData.append("description", lname.value);
 
-      if (index !== -1) {
-        rows.value.splice(index, 1);
-        console.log(index); // Remove the row at the specified index
-      }
+      store.Update_permission(formData);
+
+      fname.value = "";
+      lname.value = "";
     }
     return {
+      store,
       filter,
       customer,
       new_customer,
       mode,
       columns,
-      rows,
+      addRole,
       initialPagination: {
         sortBy: "desc",
         descending: false,
@@ -457,7 +541,6 @@ export default {
       lname,
       email,
       phone,
-      adduser,
       visibleColumns: ref([
         "first_name",
         "last_name",
@@ -470,6 +553,8 @@ export default {
       show,
       confirmDelete,
       rowData,
+      edit_role,
+      update_role,
     };
   },
 };

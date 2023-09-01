@@ -7,7 +7,7 @@
       </q-card-section>
 
       <!-- Other Login options -->
-      <q-card-actions  align="around">
+      <q-card-actions align="around">
         <div class="q-px-lg q-gutter-lg">
           <q-btn no-caps unelevated class="text-black">
             <q-img :src="require('assets/google.svg')" style="width: 20px">
@@ -19,7 +19,6 @@
             unelevated
             class="text-white"
             style="background-color: #3c5a9a"
-            
           >
             <q-img :src="require('assets/facebook.svg')" style="width: 20px">
             </q-img>
@@ -32,7 +31,7 @@
       </div>
 
       <!-- Sign up form -->
-      <q-form @submit="login">
+      <q-form @submit="SignUp">
         <q-card-section>
           <!-- input firstname lastname  -->
           <div class="row q-gutter-sm">
@@ -74,7 +73,7 @@
               lazy-rules
               :rules="[
                 (val) => (val !== null && val !== '') || 'Please type your age',
-                (val) => (val > 0 && val < 100) || 'Please type a real age',
+                (val) => (val > 0 && val < 1000) || 'Please type a real age',
               ]"
             />
           </div>
@@ -116,18 +115,19 @@
               </template>
             </q-input>
 
-            <q-file
+            <!-- <q-file
               class="q-mt-xs col"
               v-model="profilePicture"
               label="Upload Profile Picture"
               dense
               outlined
               max-files="1"
+              @input="handleProfilePictureChange"
             >
               <template v-slot:prepend>
                 <q-icon name="attach_file" />
               </template>
-            </q-file>
+            </q-file> -->
           </div>
 
           <!-- input password -->
@@ -182,7 +182,9 @@
         </q-card-actions>
 
         <!-- login button for existing account -->
-        <q-card-section class="q-pt-none q-pb-none text-center text-weight-bold">
+        <q-card-section
+          class="q-pt-none q-pb-none text-center text-weight-bold"
+        >
           I have already acoount
           <q-btn
             dense
@@ -210,6 +212,7 @@ export default {
     const age = ref("");
     const email = ref("");
     const phone = ref("");
+    const profilePicture = ref("https://cdn.quasar.dev/img/boy-avatar.png");
     const Password = ref("");
     const password1 = ref("");
     const passwordFieldType = ref("password");
@@ -219,17 +222,29 @@ export default {
       passwordFieldType.value =
         passwordFieldType.value === "password" ? "text" : "password";
     }
-    function login() {
-      let data = {
-        username: email.value,
-        password: password1.value,
-      };
-      store.User_Login(data);
+    function SignUp() {
+      const formData = new FormData();
+      formData.append("first_name", firstName.value);
+      formData.append("last_name", lastName.value);
+      formData.append("age", age.value);
+      formData.append("email", email.value);
+      formData.append("phone", phone.value);
+      // formData.append("profile_image", profilePicture.value);
+      formData.append("bio", "this is a sample bio");
+      formData.append("description", "this is a sample bio description");
+      formData.append("password", password1.value);
+
+      store.SignUP(formData);
     }
     return {
+      firstName,
+      lastName,
+      age,
       email,
       Password,
-      login,
+      phone,
+      profilePicture,
+      SignUp,
       passwordFieldType,
       togglePasswordVisibility,
       password1,

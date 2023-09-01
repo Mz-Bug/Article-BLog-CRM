@@ -3,7 +3,7 @@
     <q-card>
       <q-table
         title="Roles"
-        :rows="rows"
+        :rows="store.roles"
         :hide-header="mode === 'grid'"
         :columns="columns"
         row-key="name"
@@ -135,7 +135,7 @@
       <q-card style="width: 600px; max-width: 60vw">
         <q-card-section>
           <div class="text-h6">
-            Add new User
+            Add new Role
             <q-btn
               round
               flat
@@ -149,53 +149,41 @@
         </q-card-section>
         <q-separator inset></q-separator>
         <q-card-section class="q-pt-none">
-          <q-form class="q-gutter-md">
+          <q-form>
             <q-list>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">First Name</q-item-label>
+                  <q-item-label class="q-py-sm">User Role</q-item-label>
                   <q-input
                     dense
                     outlined
                     v-model="fname"
-                    placeholder="User Name"
+                    placeholder="Enter User Role"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
                   />
                 </q-item-section>
               </q-item>
-              <q-item>
+              <q-item class="q-pt-none">
                 <q-item-section>
-                  <q-item-label class="q-pb-xs">Last name </q-item-label>
+                  <q-item-label class="q-pb-sm">Role Description</q-item-label>
                   <q-input
                     dense
                     outlined
                     v-model="lname"
-                    placeholder="Last Name"
+                    placeholder="Enter Role Description"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
                   />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Email</q-item-label>
-                  <q-input dense outlined v-model="email" placeholder="Email" />
-                </q-item-section>
-              </q-item>
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="q-pb-xs">Phone Number</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="phone"
-                    type="tel"
-                    placeholder="Phone Number"
-                  >
-                  </q-input>
                 </q-item-section>
               </q-item>
             </q-list>
           </q-form>
         </q-card-section>
-
         <q-card-actions align="right" class="text-teal">
           <q-btn
             class="q-mx-md q-mb-md"
@@ -203,11 +191,77 @@
             type="submit"
             color="primary"
             v-close-popup
-            @click="adduser"
+            @click="addRole"
           />
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="edit_role">
+      <q-card style="width: 600px; max-width: 60vw">
+        <q-card-section>
+          <div class="text-h6">
+            Add new Role
+            <q-btn
+              round
+              flat
+              dense
+              icon="close"
+              class="float-right"
+              color="grey-8"
+              v-close-popup
+            ></q-btn>
+          </div>
+        </q-card-section>
+        <q-separator inset></q-separator>
+        <q-card-section class="q-pt-none">
+          <q-form>
+            <q-list>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="q-py-sm">User Role</q-item-label>
+                  <q-input
+                    dense
+                    outlined
+                    v-model="fname"
+                    placeholder="Enter User Role"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item class="q-pt-none">
+                <q-item-section>
+                  <q-item-label class="q-pb-sm">Role Description</q-item-label>
+                  <q-input
+                    dense
+                    outlined
+                    v-model="lname"
+                    placeholder="Enter Role Description"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'This field is required',
+                    ]"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-form>
+        </q-card-section>
+        <q-card-actions align="right" class="text-teal">
+          <q-btn
+            class="q-mx-md q-mb-md"
+            label="Save"
+            type="submit"
+            color="primary"
+            v-close-popup
+            @click="update_role"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <q-dialog v-model="show">
       <q-card>
         <q-card-section class="q-pa-md">
@@ -231,32 +285,41 @@
 
 <script>
 import { exportFile } from "quasar";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useQuasar } from "quasar";
+import { useCounterStore } from "../../stores/example-store";
 const columns = [
   {
     name: "first_name",
-    label: "User Name",
+    label: "User Id",
     align: "left",
-    field: "first_name",
+    field: "id",
   },
   {
     name: "last_name",
     align: "left",
-    label: "Last Name",
-    field: "last_name",
+    label: "User Role",
+    field: "name",
   },
   {
     name: "email",
     align: "center",
-    label: "Email",
-    field: "email",
+    label: "Description",
+    field: "description",
+    format: (val) => {
+      const words = val.split(" ");
+      return words.slice(0, 4).join(" ");
+    },
   },
   {
     name: "phone",
     align: "center",
-    label: "Phone Number",
-    field: "phone",
+    label: "Created At",
+    field: "created_at",
+    format: (val) => {
+      const date = new Date(val);
+      return date.toISOString().split("T")[0];
+    },
   },
   {
     name: "action",
@@ -265,87 +328,10 @@ const columns = [
     field: "action",
   },
 ];
-const rows = ref([
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "Dr. Jada Conolly",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-  {
-    first_name: "maaz",
-    last_name: "GILBERT",
-    email: "jhon@gmail.com",
-    phone: "02354645767",
-    action: "",
-  },
-]);
 export default {
   setup() {
+    const store = useCounterStore();
+    const rows = ref(store.roles);
     const filter = ref("");
     const fname = ref("");
     const lname = ref("");
@@ -353,6 +339,7 @@ export default {
     const phone = ref("");
     const customer = ref({});
     const new_customer = ref(false);
+    const edit_role = ref(false);
     const mode = ref("list");
     const $q = useQuasar();
     const show = ref(false);
@@ -399,26 +386,22 @@ export default {
     function new_user() {
       new_customer.value = true;
     }
-    function adduser() {
-      let user = {
-        first_name: fname.value,
-        last_name: lname.value,
-        email: email.value,
-        phone: phone.value,
-      };
-      rows.value.unshift(user);
+    function addRole() {
+      const formData = new FormData();
+      formData.append("name", fname.value);
+      formData.append("description", lname.value);
+
+      store.New_Role(formData);
+
       fname.value = "";
       lname.value = "";
-      email.value = "";
-      phone.value = "";
     }
     function EditRow(row) {
       console.log(row);
-      new_customer.value = true;
-      fname.value = row.first_name;
-      lname.value = row.last_name;
-      email.value = row.email;
-      phone.value = row.phone;
+      edit_role.value = true;
+      fname.value = row.name;
+      lname.value = row.description;
+      rowData = row;
     }
     function deleteRow(row) {
       show.value = true;
@@ -426,15 +409,22 @@ export default {
       rowData = row;
     }
     function confirmDelete() {
-      console.log("maaz");
-      console.log(rowData);
-      const rowName = rowData.first_name;
-      const index = rows.value.findIndex((item) => item.first_name === rowName);
+      // console.log(rowData.id);
+      store.Delete_Role(rowData.id);
+    }
+    onMounted(() => {
+      store.GET_Roles();
+    });
+    function update_role() {
+      const formData = new FormData();
+      formData.append("id", rowData.id);
+      formData.append("name", fname.value);
+      formData.append("description", lname.value);
 
-      if (index !== -1) {
-        rows.value.splice(index, 1);
-        console.log(index); // Remove the row at the specified index
-      }
+      store.Update_Role(formData);
+
+      fname.value = "";
+      lname.value = "";
     }
     return {
       filter,
@@ -457,7 +447,7 @@ export default {
       lname,
       email,
       phone,
-      adduser,
+      addRole,
       visibleColumns: ref([
         "first_name",
         "last_name",
@@ -470,6 +460,9 @@ export default {
       show,
       confirmDelete,
       rowData,
+      store,
+      edit_role,
+      update_role,
     };
   },
 };
