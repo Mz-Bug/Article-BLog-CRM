@@ -31,6 +31,7 @@
           color="black"
           icon="person"
           icon-right="arrow_drop_down"
+          :label="firstName"
         >
           <!-- :label="store.profile.first_name" -->
           <q-menu>
@@ -111,6 +112,8 @@
 </template>
 
 <script>
+import { onMounted } from "vue";
+import { useCounterStore } from "src/stores/example-store";
 import { LocalStorage } from "quasar";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -145,6 +148,8 @@ export default {
     const route = useRouter();
     const leftDrawerOpen = ref(false);
     const activeIndex = ref(0);
+    const firstName = ref(null);
+    const lastName = ref(null);
 
     function activateItem(index, router) {
       activeIndex.value = index;
@@ -154,6 +159,16 @@ export default {
       localStorage.removeItem("token");
       route.push("/");
     }
+    onMounted(async () => {
+      try {
+        await store.Get_Profile();
+        // Populate the data from the store once it's available
+        firstName.value = store.profile.first_name;
+        lastName.value = store.profile.last_name;
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    });
     return {
       store,
       activeIndex,
@@ -164,6 +179,9 @@ export default {
       menu,
       other,
       logout,
+      store,
+      firstName,
+      lastName,
     };
   },
 };

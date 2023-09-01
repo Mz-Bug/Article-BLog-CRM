@@ -5,11 +5,11 @@
         <span></span>
         <q-card class="my-card" flat bordered>
           <q-card-section horizontal>
-            <q-card-section class="q-pt-xs">
+            <q-card-section class="q-pt-xs col-7">
               <div class="text-overline">US Region</div>
 
               <!-- Conditionally render user profile data -->
-              <div v-if="firstName && lastName" class="text-h5 q-mt-sm q-mb-xs">
+              <div v-if="firstName && lastName" class="text-h5 q-mt-sm q-mb-xs text-capitalize">
                 {{ firstName }} {{ lastName }}
               </div>
               <div v-else class="text-h5 q-mt-sm q-mb-xs">Loading...</div>
@@ -23,9 +23,9 @@
             <q-card-section class="col-5 flex flex-center">
               <!-- Conditionally render user image -->
               <q-img
-                v-if="firstName && lastName"
+                v-if="profile_image"
                 class="rounded-borders"
-                src="https://cdn.quasar.dev/img/boy-avatar.png"
+                :src="profile_image"
               />
               <div v-else>Loading...</div>
             </q-card-section>
@@ -115,4 +115,5 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
