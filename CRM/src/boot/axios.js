@@ -28,7 +28,7 @@ import { boot } from "quasar/wrappers";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://8610-121-91-38-64.ngrok-free.app/",
+  baseURL: "https://8610-121-91-38-64.ngrok-free.app",
   headers: {
     "Content-Type": "application/json",
     "ngrok-skip-browser-warning": "afsd",
@@ -36,7 +36,7 @@ const api = axios.create({
   },
 });
 
-export default boot(({ app }) => {
+export default boot(({ app }) => { 
   app.config.globalProperties.$axios = axios;
   app.config.globalProperties.$api = api;
 });

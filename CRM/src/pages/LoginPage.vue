@@ -1,11 +1,13 @@
 <template>
   <q-page class="flex flex-center">
     <q-card class="my-card">
+      <!-- title -->
       <q-card-section class="text-center">
         <div class="text-h5">Welcome Back</div>
         <div class="q-mt-sm">Pick up where you left off</div>
       </q-card-section>
       <q-card-actions>
+        <!-- other ways to login -->
         <div class="q-px-lg q-gutter-lg">
           <q-btn no-caps unelevated class="text-black">
             <q-img :src="require('assets/google.svg')" style="width: 20px">
@@ -27,7 +29,11 @@
       <div class="q-px-lg">
         <q-separator class="q-my-md" />
       </div>
+
+      <!-- Login Form -->
       <q-form @submit="login">
+        
+        <!-- Input Email -->
         <q-card-section>
           <div>Email Address</div>
           <div>
@@ -47,6 +53,8 @@
             </q-input>
           </div>
         </q-card-section>
+
+        <!-- Input Password -->
         <q-card-section class="q-pt-none">
           <div>Password</div>
           <div>
@@ -62,6 +70,8 @@
               <template v-slot:prepend>
                 <q-icon name="eva-lock-outline" color="blue-grey-4" />
               </template>
+
+              <!-- Hidden Password button -->
               <template v-slot:append>
                 <q-icon
                   :name="
@@ -77,6 +87,8 @@
             </q-input>
           </div>
         </q-card-section>
+
+        <!-- Forget Password Button -->
         <q-card-section class="q-pt-none">
           Forgot Password?
           <q-btn
@@ -88,6 +100,8 @@
             label="Click Here"
           />
         </q-card-section>
+
+        <!-- Login Button and create account link -->
         <q-card-actions vertical align="center">
           <q-btn
             color="purple"
@@ -96,7 +110,7 @@
             type="submit"
             label="Login"
           />
-          <!-- @click="login" -->
+
           <q-btn
             flat
             no-caps
@@ -110,6 +124,8 @@
   </q-page>
 </template>
 
+
+<!-- Script Area -->
 <script>
 import { ref } from "vue";
 import { useCounterStore } from "../stores/example-store";
@@ -143,6 +159,8 @@ export default {
   },
 };
 </script>
+
+<!-- Style Area -->
 <style scoped>
 .my-card {
   max-width: 500px;

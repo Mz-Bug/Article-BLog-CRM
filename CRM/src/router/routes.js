@@ -1,4 +1,7 @@
+// Defining Routes
 const routes = [
+
+  // Paths For Login Layout
   {
     path: "/",
     component: () => import("layouts/LoginLayout.vue"),
@@ -8,6 +11,7 @@ const routes = [
     ],
   },
 
+  // Paths for Super admin layout
   {
     path: "/admin-dashboard",
     meta: { role: "root" },
@@ -31,6 +35,8 @@ const routes = [
       },
     ],
   },
+
+  // Paths for normal user/ admin
   {
     path: "/user-dashboard",
     meta: { role: "admin" },

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { Notify } from "quasar";
 import { api } from "src/boot/axios";
 
+import axios from "axios";
 export const useCounterStore = defineStore("counter", {
   state: () => ({
     userRole: "admin",
@@ -11,6 +12,7 @@ export const useCounterStore = defineStore("counter", {
     roles: [],
     Permissions: [],
     User: [],
+    profile: null,
   }),
   getters: {
     doubleCount: (state) => state.counter * 2,
@@ -121,6 +123,7 @@ export const useCounterStore = defineStore("counter", {
     //     // Any cleanup or post-processing goes here
     //   }
     // },
+
     // async Get_Article() {
     //   try {
     //     const url = "/api/blogs"; // Make sure to include the correct endpoint
@@ -142,7 +145,7 @@ export const useCounterStore = defineStore("counter", {
     //   }
     // },
 
-    //
+    // Getting All articles/ Blogs from API
     async Get_Article() {
       api
         .get("/api/blogs")
@@ -154,29 +157,7 @@ export const useCounterStore = defineStore("counter", {
         });
     },
 
-    async New_Artcle(article, id) {
-      try {
-        const response = await api.post(`/api/blog/add/${id}`, article);
-        this.article = response.data;
-        Notify.create({
-          message: "You have successfully Added Article",
-          color: "positive",
-          icon: "eva-checkmark-circle-outline",
-          position: "top",
-          timeout: 1000,
-        });
-      } catch (error) {
-        console.error("Error:", error);
-        Notify.create({
-          message: "Error While Adding Article",
-          color: "negative",
-          icon: "eva-close-circle-outline",
-          position: "top",
-          timeout: 1000,
-        });
-      }
-    },
-    //Get All Category
+    //Getting All Categories from API
     async Get_All_Category() {
       api
         .get("api/categories")
@@ -189,6 +170,8 @@ export const useCounterStore = defineStore("counter", {
           console.error("Error:", error);
         });
     },
+
+    // Adding New Category from API
     async Add_new_Category(category) {
       try {
         const response = await api.post("/api/category/add", null, {
@@ -512,6 +495,32 @@ export const useCounterStore = defineStore("counter", {
           position: "top",
           timeout: 1000,
         });
+      }
+    },
+
+    //Getting Profile from API
+    async Get_Profile() {
+      try {
+        const url = "https://8610-121-91-38-64.ngrok-free.app/api/login"; // Make sure to include the correct endpoint
+        let user = {
+          email: "hamza@gmail.com",
+          password: "123456",
+        };
+        const response = await axios.post(url, user, {
+          headers: {
+            // Use the "Authorization" header with the access token
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "afsd",
+          },
+        });
+
+        this.profile = response.data.user;
+        // console.log("Response:", this.profile);
+        // You can do further processing with the response data here
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        // Any cleanup or post-processing goes here
       }
     },
   },
