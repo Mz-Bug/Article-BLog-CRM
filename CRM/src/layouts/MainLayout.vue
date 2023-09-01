@@ -24,15 +24,15 @@
           </q-btn>
         </div>
         <q-btn
-          class="q-mr-md"
+          class="q-mr-md text-capitalize"
           style="background-color: #f1f3f8"
           no-caps
           flat
           color="black"
           icon="person"
           icon-right="arrow_drop_down"
-          label="Jhon Deo"
         >
+          <!-- :label="store.profile.first_name" -->
           <q-menu>
             <q-list style="min-width: 150px">
               <q-item clickable v-close-popup to="/accounts">
@@ -114,6 +114,7 @@
 import { LocalStorage } from "quasar";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useCounterStore } from "src/stores/example-store";
 const menu = [
   {
     icon: "eva-bar-chart-2-outline",
@@ -140,6 +141,7 @@ const other = [
 ];
 export default {
   setup() {
+    const store = useCounterStore();
     const route = useRouter();
     const leftDrawerOpen = ref(false);
     const activeIndex = ref(0);
@@ -153,6 +155,7 @@ export default {
       route.push("/");
     }
     return {
+      store,
       activeIndex,
       activateItem,
       toggleLeftDrawer() {

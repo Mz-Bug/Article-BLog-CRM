@@ -40,7 +40,6 @@
       <q-card-section class="q-pt-none q-ml-md">
         <div class="text-h5 q-my-md">Content</div>
         <editor v-model="editorValue"></editor>
-        <p>Editor Value: {{ editorValue }}</p>
       </q-card-section>
       <q-card-actions align="right" class="q-mr-lg q-mb-sm">
         <div class="q-gutter-lg">
@@ -89,6 +88,7 @@ export default {
         // Handle case where category is not selected
         console.log("Please select a category");
       }
+      (title.value = ""), (editorValue.value = "");
     }
 
     return {

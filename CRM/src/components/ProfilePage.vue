@@ -45,7 +45,6 @@
         <q-card>
           <q-card-section>
             <q-form class="q-gutter-md">
-              
               <q-input filled v-model="firstName" label="First Name" />
 
               <q-input filled v-model="lastName" label="Last Name" />
@@ -82,11 +81,11 @@ export default defineComponent({
     const phone = ref(null);
     const bio = ref(null);
     const description = ref(null);
-    const profile_image = ref(null)
+    const profile_image = ref(null);
 
     onMounted(async () => {
       try {
-        await store.Get_Profile();
+        await store.profile;
         // Populate the data from the store once it's available
         firstName.value = store.profile.first_name;
         lastName.value = store.profile.last_name;
@@ -96,7 +95,6 @@ export default defineComponent({
         bio.value = store.profile.bio;
         description.value = store.profile.description;
         profile_image.value = store.profile.profile_image;
-
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }

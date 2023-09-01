@@ -97,7 +97,7 @@
           <q-table
             flat
             bordered
-            :rows="rows"
+            :rows="store.coumunity"
             :columns="columns"
             row-key="name"
             :selected-rows-label="getSelectedString"
@@ -120,6 +120,7 @@
                   flat
                   size="md"
                   icon="delete"
+                  @click="deleteitem(props.row)"
                 />
               </q-td>
             </template>
@@ -131,90 +132,108 @@
   </q-page>
 </template>
 <script>
-import { ref } from "vue";
-
+import { store } from "quasar/wrappers";
+import { ref, onMounted } from "vue";
+import { useCounterStore } from "../stores/example-store";
+import { api } from "src/boot/axios";
 const columns = [
   {
-    name: "desc",
+    name: "phone",
     required: true,
     label: "Added Date",
     align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-    sortable: true,
+    field: "created_at",
+    format: (val) => {
+      const date = new Date(val);
+      return date.toISOString().split("T")[0];
+    },
   },
   {
     name: "First_Name",
     align: "center",
     label: "First Name",
-    field: "First_Name",
+    field: "first_name",
     sortable: true,
   },
-  { name: "Last_Name", label: "Last Name", field: "Last_Name", sortable: true },
+  { name: "Last_Name", label: "Last Name", field: "last_name", sortable: true },
   { name: "email", label: "Email", field: "email" },
   { name: "status", label: "Status", field: "status" },
 ];
 
-const rows = [
-  {
-    name: "20 Aug 2022",
-    First_Name: "Maaz",
-    Last_Name: "Ali",
-    email: "maaz@gmail.com",
-    status: "Suscribe",
-  },
-  {
-    name: "29 Aug 2022",
-    First_Name: "Maaz",
-    Last_Name: "Ali",
-    email: "maaz@gmail.com",
-    status: "Suscribe",
-  },
-  {
-    name: "28 Aug 2022",
-    First_Name: "Maaz",
-    Last_Name: "Ali",
-    email: "maaz@gmail.com",
-    status: "Suscribe",
-  },
-  {
-    name: "27 Aug 2022",
-    First_Name: "Maaz",
-    Last_Name: "Ali",
-    email: "maaz@gmail.com",
-    status: "Suscribe",
-  },
-  {
-    name: "26 Aug 2022",
-    First_Name: "Maaz",
-    Last_Name: "Ali",
-    email: "maaz@gmail.com",
-    status: "Suscribe",
-  },
-  {
-    name: "25 Aug 2022",
-    First_Name: "Maaz",
-    Last_Name: "Ali",
-    email: "maaz@gmail.com",
-    status: "Suscribe",
-  },
-  {
-    name: "24 Aug 2022",
-    First_Name: "Maaz",
-    Last_Name: "Ali",
-    email: "maaz@gmail.com",
-    status: "Suscribe",
-  },
-];
+// const rows = [
+//   {
+//     name: "20 Aug 2022",
+//     First_Name: "Maaz",
+//     Last_Name: "Ali",
+//     email: "maaz@gmail.com",
+//     status: "Suscribe",
+//   },
+//   {
+//     name: "29 Aug 2022",
+//     First_Name: "Maaz",
+//     Last_Name: "Ali",
+//     email: "maaz@gmail.com",
+//     status: "Suscribe",
+//   },
+//   {
+//     name: "28 Aug 2022",
+//     First_Name: "Maaz",
+//     Last_Name: "Ali",
+//     email: "maaz@gmail.com",
+//     status: "Suscribe",
+//   },
+//   {
+//     name: "27 Aug 2022",
+//     First_Name: "Maaz",
+//     Last_Name: "Ali",
+//     email: "maaz@gmail.com",
+//     status: "Suscribe",
+//   },
+//   {
+//     name: "26 Aug 2022",
+//     First_Name: "Maaz",
+//     Last_Name: "Ali",
+//     email: "maaz@gmail.com",
+//     status: "Suscribe",
+//   },
+//   {
+//     name: "25 Aug 2022",
+//     First_Name: "Maaz",
+//     Last_Name: "Ali",
+//     email: "maaz@gmail.com",
+//     status: "Suscribe",
+//   },
+//   {
+//     name: "24 Aug 2022",
+//     First_Name: "Maaz",
+//     Last_Name: "Ali",
+//     email: "maaz@gmail.com",
+//     status: "Suscribe",
+//   },
+// ];
 
 export default {
   setup() {
+    const store = useCounterStore();
     const selected = ref([]);
-
+    onMounted(() => {
+      store.GET_Community();
+    });
+    function deleteitem(row) {
+      api
+        .post("/api/member/delete/" + row.id)
+        .then((res) => {
+          console.log(res);
+          store.GET_Community();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
     return {
       selected,
       columns,
-      rows,
+      // rows,
 
       getSelectedString() {
         return selected.value.length === 0
@@ -223,6 +242,8 @@ export default {
               selected.value.length > 1 ? "s" : ""
             } selected of ${rows.length}`;
       },
+      store,
+      deleteitem,
     };
   },
 };

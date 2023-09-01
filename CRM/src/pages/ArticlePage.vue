@@ -110,6 +110,7 @@
                       flat
                       size="md"
                       icon="delete"
+                      @click="DeleteRow(props.row)"
                     />
                   </q-td>
                 </template>
@@ -252,9 +253,11 @@ const columns = [
     required: true,
     label: "Created At",
     align: "left",
-    field: (row) => row.created_at,
-    format: (val) => `${val}`,
-    sortable: true,
+    field: "created_at",
+    format: (val) => {
+      const date = new Date(val);
+      return date.toISOString().split("T")[0];
+    },
   },
   {
     name: "action",
@@ -274,21 +277,28 @@ export default defineComponent({
     const categoryy = ref("");
     const add_cetogory = ref(false);
     const edit_cetogory = ref(false);
-    const editcategoryy = ref("");
-    const rowData = null;
+    let editcategoryy = ref("");
+    let rowData = null;
     function EditRow(row) {
       edit_cetogory.value = true;
+      console.log(row);
       editcategoryy.value = row.Name;
-      store.update = row;
+      rowData = row;
     }
     function update_category() {
-      // store.Update_category(store.update);
+      const formData = new FormData();
+      formData.append("Name", editcategoryy.value);
+
+      store.Update_Cetegory(formData, rowData.id);
     }
     function add_new_category() {
       let category = {
         Name: categoryy.value,
       };
       store.Add_new_Category(category);
+    }
+    function DeleteRow(rowData) {
+      store.Delete_Category(rowData.id);
     }
     onMounted(() => {
       store.Get_Article();
@@ -312,6 +322,7 @@ export default defineComponent({
       edit_cetogory,
       editcategoryy,
       update_category,
+      DeleteRow,
     };
   },
 });

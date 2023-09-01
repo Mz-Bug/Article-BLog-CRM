@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { Notify } from "quasar";
 import { api } from "src/boot/axios";
-
-import axios from "axios";
 export const useCounterStore = defineStore("counter", {
   state: () => ({
     userRole: "admin",
@@ -13,10 +11,9 @@ export const useCounterStore = defineStore("counter", {
     Permissions: [],
     User: [],
     profile: null,
+    coumunity: [],
   }),
-  getters: {
-    doubleCount: (state) => state.counter * 2,
-  },
+  getters: {},
   actions: {
     async SignUP(formData) {
       try {
@@ -49,6 +46,7 @@ export const useCounterStore = defineStore("counter", {
         this.userRole = response.data.user.role.name;
         localStorage.setItem("token", response.data.Bearer);
         // Redirect to appropriate dashboard based on user role
+        this.profile = response.data.user;
         if (this.userRole === "root") {
           this.router.push("/admin-dashboard"); // Replace with your admin dashboard route
         } else if (this.userRole === "admin") {
@@ -76,74 +74,6 @@ export const useCounterStore = defineStore("counter", {
         });
       }
     },
-
-    //Article Action
-    // async Get_Article() {
-    //   try {
-    //     const url = "https://4572-72-255-39-45.ngrok-free.app/api/current-user"; // Make sure to include the correct endpoint
-    //     const accessToken =
-    //       "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZWNmYmRiZjM3ODhiZjMxYTI2MTJjOTgyMWRlZjgzNTE5MjBiNGZmNDQyMTdlOWNkNjg1ODk3YjIxODc3ZTIwN2JiZjQ1M2YyMTBkNjU0YjUiLCJpYXQiOjE2OTM0NjgwNjUuNjE5NDQsIm5iZiI6MTY5MzQ2ODA2NS42MTk0NDgsImV4cCI6MTcyNTA5MDQ2NS41OTc3LCJzdWIiOiI3Iiwic2NvcGVzIjpbXX0.OE8fPoXlp30PH8SdFHkOfecMXkliMyZo10MCM7Oc_N-sbPuu1O4ixY38nVAzI7iEgozSOTEH3JzeZenJp_EgW-JUQ26LR1YaOHQMXN3zpwI_B2PVZZ5TxPCdOg5l8Z3TbYv9uAHNn_9pBPmjT27MdjAqMpIbR6tRWjHKTQfJu0hbdz7oLPzrsC0y1U8kME3g3bJUY9yfLf2aLZDXuJfRPRDj0TmvMdiSZarPPczCHnSF4dLLExIdx0VvVYW7RFiuLcc008yMs87YJAIghmLHRvxTL6gQCd0XDMfOxrgICF42D-6EM-QQAuFzSFAyl7iLsHw4aLAACVqnCmlWwusCHv2BjM41LAyuozomFozlAaHJXOr2N8i6FGFuT6PlfoPiDaTyPJObTTNCyQlDgD5WYYJbFBLqTBC0yMLF61O_WCj2R-JvTiAXL4rCtYtyM26B1WgQiDCC8gif9eZlbon1XZPrrWY9878t3bKXgy20G9XP7ICgBlS-Sg9XwQZc2wsp23RcbsGDH4oUaGGaKz0p7sNo0ULdmazu1PBNZI7Q4zqeJgxiY07kD_p0-jc8SvHxoqZ4x_8Q7ih3FK7IUysk6x-CnfevIpWOocOJ_I794ySxGsaj2YQelXWl8UtO5mXru0pldaONXltfp7nw0PnY_SlIxLbWjbZG9SS2MmwyoAM"; // Replace with your actual access token
-
-    //     const response = await axios.get(url, {
-    //       headers: {
-    //         Authorization: `Bearer ${accessToken}`, // Use the "Authorization" header with the access token
-    //         "Content-Type": "application/json",
-    //         "ngrok-skip-browser-warning": "afsd",
-    //       },
-    //     });
-
-    //     console.log("Response:", response.data);
-    //     // You can do further processing with the response data here
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   } finally {
-    //     // Any cleanup or post-processing goes here
-    //   }
-    // },
-    // async Get_Article() {
-    //   try {
-    //     const url = "https://4572-72-255-39-45.ngrok-free.app/api/login"; // Make sure to include the correct endpoint
-    //     let user = {
-    //       email: "hamza@gmail.com",
-    //       password: "123456",
-    //     };
-    //     const response = await axios.post(url, user, {
-    //       headers: {
-    //         // Use the "Authorization" header with the access token
-    //         "Content-Type": "application/json",
-    //         "ngrok-skip-browser-warning": "afsd",
-    //       },
-    //     });
-
-    //     console.log("Response:", response.data);
-    //     // You can do further processing with the response data here
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   } finally {
-    //     // Any cleanup or post-processing goes here
-    //   }
-    // },
-
-    // async Get_Article() {
-    //   try {
-    //     const url = "/api/blogs"; // Make sure to include the correct endpoint
-
-    //     const response = await axios.get(url, {
-    //       headers: {
-    //         // Use the "Authorization" header with the access token
-    //         "Content-Type": "application/json",
-    //         "ngrok-skip-browser-warning": "afsd",
-    //       },
-    //     });
-
-    //     console.log("Response:", response.data);
-    //     // You can do further processing with the response data here
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //   } finally {
-    //     // Any cleanup or post-processing goes here
-    //   }
-    // },
 
     // Getting All articles/ Blogs from API
     async Get_Article() {
@@ -185,6 +115,7 @@ export const useCounterStore = defineStore("counter", {
           position: "top",
           timeout: 1000,
         });
+        this.Get_All_Category();
       } catch (error) {
         console.error("Error:", error);
         Notify.create({
@@ -196,32 +127,67 @@ export const useCounterStore = defineStore("counter", {
         });
       }
     },
-    // async Update_category(update) {
-    //   console.log(this.update);
-    // api
-    //   .post("/api/category/update/" + this.update.id,)
-    //   .then((res) => {
-    //     console.log(res);
-    //     Notify.create({
-    //       message: "You have successfully Updated Category",
-    //       color: "positive",
-    //       icon: "eva-checkmark-circle-outline",
-    //       position: "top",
-    //       timeout: 1000,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     Notify.create({
-    //       message: "Error While Updated Category",
-    //       color: "negative",
-    //       icon: "eva-close-circle-outline",
-    //       position: "top",
-    //       timeout: 1000,
-    //     });
-    //     console.log(err);
-    //   //   });
-    // },
 
+    async Update_Cetegory(formData, id) {
+      try {
+        const response = await api.post(
+          "/api/category/update/" + id,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`, // Replace with your actual token
+            },
+          }
+        );
+        console.log("Response:", response.data);
+        Notify.create({
+          message: "You have Update Cetegory",
+          color: "positive",
+          icon: "eva-checkmark-circle-outline",
+          position: "top",
+          timeout: 1000,
+        });
+        this.Get_All_Category();
+      } catch (error) {
+        console.error("Error:", error);
+        Notify.create({
+          message: "Error while update RoCetegoryle",
+          color: "negative",
+          icon: "eva-close-circle-outline",
+          position: "top",
+          timeout: 1000,
+        });
+      }
+    },
+
+    async Delete_Category(id) {
+      try {
+        const response = await api.post("/api/category/delete/" + id, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        console.log("Response:", response.data);
+        Notify.create({
+          message: "You have successfully deleted the Cetegory",
+          color: "positive",
+          icon: "eva-checkmark-circle-outline",
+          position: "top",
+          timeout: 1000,
+        });
+        this.Get_All_Category();
+      } catch (error) {
+        console.error("Error:", error);
+        Notify.create({
+          message: "Error while deleting the Cetegory",
+          color: "negative",
+          icon: "eva-close-circle-outline",
+          position: "top",
+          timeout: 1000,
+        });
+      }
+    },
     //GET Roles
     async GET_Roles() {
       try {
@@ -294,33 +260,6 @@ export const useCounterStore = defineStore("counter", {
       }
     },
 
-    // async Delete_Role(id) {
-    //   console.log(id);
-    //   try {
-    //     const response = await api.delete("/api/role/delete", id, {
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem("token")}`, // Replace with your actual token
-    //       },
-    //     });
-    //     console.log("Response:", response.data);
-    //     Notify.create({
-    //       message: "You have successfully Delete Role",
-    //       color: "positive",
-    //       icon: "eva-checkmark-circle-outline",
-    //       position: "top",
-    //       timeout: 1000,
-    //     });
-    //     this.GET_Roles();
-    //   } catch (error) {
-    //     console.error("Error:", error);
-    //     Notify.create({
-    //       message: "Error while Delete Role",
-    //       color: "negative",
-    //       icon: "eva-close-circle-outline",
-    //       position: "top",
-    //       timeout: 1000,
-    //     });
-    //   }
     async Delete_Role(id) {
       console.log(id);
       try {
@@ -461,7 +400,7 @@ export const useCounterStore = defineStore("counter", {
     // User
     async GET_User() {
       try {
-        const response = await api.get("/api/current-user", {
+        const response = await api.get("/api/users", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`, // Replace with your actual token
           },
@@ -497,30 +436,41 @@ export const useCounterStore = defineStore("counter", {
         });
       }
     },
-
-    //Getting Profile from API
-    async Get_Profile() {
+    //Community
+    async GET_Community() {
       try {
-        const url = "https://8610-121-91-38-64.ngrok-free.app/api/login"; // Make sure to include the correct endpoint
-        let user = {
-          email: "hamza@gmail.com",
-          password: "123456",
-        };
-        const response = await axios.post(url, user, {
+        const response = await api.get("api/show/members", {
           headers: {
-            // Use the "Authorization" header with the access token
-            "Content-Type": "application/json",
-            "ngrok-skip-browser-warning": "afsd",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Replace with your actual token
           },
         });
-
-        this.profile = response.data.user;
-        // console.log("Response:", this.profile);
-        // You can do further processing with the response data here
+        console.log(response);
+        this.coumunity = response.data;
+        console.log(this.coumunity);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async New_Artcle(article, id) {
+      try {
+        const response = await api.post(`/api/blog/add/${id}`, article);
+        this.article = response.data;
+        Notify.create({
+          message: "You have successfully Added Article",
+          color: "positive",
+          icon: "eva-checkmark-circle-outline",
+          position: "top",
+          timeout: 1000,
+        });
       } catch (error) {
         console.error("Error:", error);
-      } finally {
-        // Any cleanup or post-processing goes here
+        Notify.create({
+          message: "Error While Adding Article",
+          color: "negative",
+          icon: "eva-close-circle-outline",
+          position: "top",
+          timeout: 1000,
+        });
       }
     },
   },
