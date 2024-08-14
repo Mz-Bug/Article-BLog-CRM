@@ -6,15 +6,8 @@
           <div class="text-h6 text-weight-bolder">Article</div>
         </q-card-section>
 
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="left"
-          narrow-indicator
-        >
+        <q-tabs v-model="tab" dense class="text-grey" active-color="primary" indicator-color="primary" align="left"
+          narrow-indicator>
           <q-tab name="article" label="Article" />
           <q-tab name="category" label="Category" />
         </q-tabs>
@@ -32,12 +25,7 @@
                 </h4>
               </q-item-section>
               <q-item-section side>
-                <q-btn
-                  class="text-right"
-                  color="primary"
-                  label="+ New Article"
-                  to="/create_article"
-                />
+                <q-btn class="text-right" color="primary" label="+ New Article" to="/create_article" />
               </q-item-section>
             </q-item>
 
@@ -45,25 +33,14 @@
               <p class="text-subtitle1 text-weight-medium q-mb-none">
                 {{ blog.Title }}: {{ blog.Content }}
               </p>
-              <q-badge
-                class="q-pa-sm"
-                rounded
-                color="grey"
-                :label="blog.Description"
-              />
+              <q-badge class="q-pa-sm" rounded color="grey" :label="blog.Description" />
 
               <q-item class="q-pa-none">
                 <p class="text-caption q-mt-md q-mb-none">
                   Published on : {{ blog.created_at }}
                 </p>
                 <q-btn flat size="sm" color="grey" icon="ios_share" />
-                <q-btn
-                  class="q-pa-none"
-                  color="grey"
-                  flat
-                  size="sm"
-                  icon="more_horiz"
-                />
+                <q-btn class="q-pa-none" color="grey" flat size="sm" icon="more_horiz" />
               </q-item>
               <q-separator inset />
             </div>
@@ -78,40 +55,16 @@
                 </h4>
               </q-item-section>
               <q-item-section side>
-                <q-btn
-                  class="text-right"
-                  color="primary"
-                  label="+ New Category"
-                  @click="add_cetogory = true"
-                />
+                <q-btn class="text-right" color="primary" label="+ New Category" @click="add_cetogory = true" />
               </q-item-section>
             </q-item>
 
             <div class="q-pa-md">
-              <q-table
-                flat
-                bordered
-                :rows="store.category"
-                :columns="columns"
-                row-key="name"
-              >
+              <q-table flat bordered :rows="store.category" :columns="columns" row-key="name">
                 <template v-slot:body-cell-action="props">
                   <q-td :props="props">
-                    <q-btn
-                      flat
-                      size="md"
-                      color="primary"
-                      icon="edit"
-                      @click="EditRow(props.row)"
-                    />
-                    <q-btn
-                      class="q-pa-none"
-                      color="red"
-                      flat
-                      size="md"
-                      icon="delete"
-                      @click="DeleteRow(props.row)"
-                    />
+                    <q-btn flat size="md" color="primary" icon="edit" @click="EditRow(props.row)" />
+                    <q-btn class="q-pa-none" color="red" flat size="md" icon="delete" @click="DeleteRow(props.row)" />
                   </q-td>
                 </template>
               </q-table>
@@ -129,15 +82,7 @@
         <q-card-section>
           <div class="text-h6">
             Add new Category
-            <q-btn
-              round
-              flat
-              dense
-              icon="close"
-              class="float-right"
-              color="grey-8"
-              v-close-popup
-            ></q-btn>
+            <q-btn round flat dense icon="close" class="float-right" color="grey-8" v-close-popup></q-btn>
           </div>
         </q-card-section>
         <q-separator inset></q-separator>
@@ -146,15 +91,8 @@
             <q-list>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="text-body1 q-my-md"
-                    >Category Name</q-item-label
-                  >
-                  <q-input
-                    dense
-                    outlined
-                    v-model="categoryy"
-                    placeholder="Category Name"
-                  />
+                  <q-item-label class="text-body1 q-my-md">Category Name</q-item-label>
+                  <q-input dense outlined v-model="categoryy" placeholder="Category Name" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -162,14 +100,8 @@
         </q-card-section>
 
         <q-card-actions align="right" class="text-teal">
-          <q-btn
-            class="q-mx-md q-mb-md"
-            label="Save"
-            type="submit"
-            color="primary"
-            v-close-popup
-            @click="add_new_category"
-          />
+          <q-btn class="q-mx-md q-mb-md" label="Save" type="submit" color="primary" v-close-popup
+            @click="add_new_category" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -178,15 +110,7 @@
         <q-card-section>
           <div class="text-h6">
             Add new Category
-            <q-btn
-              round
-              flat
-              dense
-              icon="close"
-              class="float-right"
-              color="grey-8"
-              v-close-popup
-            ></q-btn>
+            <q-btn round flat dense icon="close" class="float-right" color="grey-8" v-close-popup></q-btn>
           </div>
         </q-card-section>
         <q-separator inset></q-separator>
@@ -195,15 +119,8 @@
             <q-list>
               <q-item>
                 <q-item-section>
-                  <q-item-label class="text-body1 q-my-md"
-                    >Category Name</q-item-label
-                  >
-                  <q-input
-                    dense
-                    outlined
-                    v-model="editcategoryy"
-                    placeholder="Category Name"
-                  />
+                  <q-item-label class="text-body1 q-my-md">Category Name</q-item-label>
+                  <q-input dense outlined v-model="editcategoryy" placeholder="Category Name" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -211,14 +128,8 @@
         </q-card-section>
 
         <q-card-actions align="right" class="text-teal">
-          <q-btn
-            class="q-mx-md q-mb-md"
-            label="Save"
-            type="submit"
-            color="primary"
-            v-close-popup
-            @click="update_category"
-          />
+          <q-btn class="q-mx-md q-mb-md" label="Save" type="submit" color="primary" v-close-popup
+            @click="update_category" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -244,7 +155,7 @@ const columns = [
     required: true,
     label: "Name",
     align: "left",
-    field: (row) => row.Name,
+    field: (row) => row.name,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -254,10 +165,10 @@ const columns = [
     label: "Created At",
     align: "left",
     field: "created_at",
-    format: (val) => {
-      const date = new Date(val);
-      return date.toISOString().split("T")[0];
-    },
+    // format: (val) => {
+    //   const date = new Date(val);
+    //   return date.toISOString().split("T")[0];
+    // },
   },
   {
     name: "action",
@@ -300,10 +211,10 @@ export default defineComponent({
     function DeleteRow(rowData) {
       store.Delete_Category(rowData.id);
     }
-    onMounted(() => {
-      store.Get_Article();
-      store.Get_All_Category();
-    });
+    // onMounted(() => {
+    //   store.Get_Article();
+    //   store.Get_All_Category();
+    // });
     return {
       tab: ref("article"),
       selected,

@@ -4,14 +4,140 @@ import { api } from "src/boot/axios";
 export const useCounterStore = defineStore("counter", {
   state: () => ({
     userRole: "admin",
-    article: null,
-    category: null,
+    article: [
+      {
+        Title: "Fake News",
+        Content: "This is a detailed analysis of the spread of fake news on social media.",
+        Description: "An article discussing the impact and origins of fake news.",
+        created_at: "2024-08-10"
+      },
+      {
+        Title: "Climate Change",
+        Content: "An in-depth look at the current state of global climate change.",
+        Description: "Explores the causes, effects, and solutions to climate change.",
+        created_at: "2024-07-25"
+      },
+      {
+        Title: "Artificial Intelligence",
+        Content: "A comprehensive guide to understanding artificial intelligence and its applications.",
+        Description: "Discusses the rise of AI and its impact on various industries.",
+        created_at: "2024-06-15"
+      },
+      {
+        Title: "Space Exploration",
+        Content: "This article covers the latest advancements in space exploration.",
+        Description: "Focuses on recent missions and the future of space travel.",
+        created_at: "2024-08-01"
+      }
+    ],
+    category:  [
+  {
+    id: 1,
+    name: "Technology",
+    created_at: "08-2-2022"
+  },
+  {
+    id: 2,
+    name: "Health",
+    created_at: "09-2-2022"
+  },
+  {
+    id: 3,
+    name: "Travel",
+    created_at: "18-2-2022"
+  },
+  {
+    id: 4,
+    name: "Education",
+    created_at: "10-2-2022"
+  },
+  {
+    id: 5,
+    name: "Finance",
+    created_at: "11-2-2022"
+  },
+  {
+    id: 6,
+    name: "Lifestyle",
+    created_at: "12-2-2022"
+  },
+  {
+    id: 7,
+    name: "Entertainment",
+    created_at: "13-2-2022"
+  },
+  {
+    id: 8,
+    name: "Food",
+    created_at: "4-2-2022"
+  },
+  {
+    id: 9,
+    name: "Sports",
+    created_at: "15-2-2022"
+  },
+  {
+    id: 10,
+    name: "Environment",
+    created_at: "16-2-2022"
+  }
+],
     update: null,
     roles: [],
     Permissions: [],
     User: [],
     profile: null,
-    coumunity: [],
+    coumunity: [
+      {
+        name: "20 Aug 2023",
+        first_name: "John",
+        last_name: "Doe",
+        email: "john.doe@example.com",
+        status: "Subscribed",
+      },
+      {
+        name: "29 Aug 2023",
+        first_name: "Jane",
+        last_name: "Smith",
+        email: "jane.smith@example.com",
+        status: "Subscribed",
+      },
+      {
+        name: "28 Aug 2023",
+        first_name: "Michael",
+        last_name: "Johnson",
+        email: "michael.johnson@example.com",
+        status: "Subscribed",
+      },
+      {
+        name: "27 Aug 2023",
+        first_name: "Emily",
+        last_name: "Davis",
+        email: "emily.davis@example.com",
+        status: "Subscribed",
+      },
+      {
+        name: "26 Aug 2023",
+        first_name: "David",
+        last_name: "Brown",
+        email: "david.brown@example.com",
+        status: "Subscribed",
+      },
+      {
+        name: "25 Aug 2023",
+        first_name: "Sophia",
+        last_name: "Miller",
+        email: "sophia.miller@example.com",
+        status: "Subscribed",
+      },
+      {
+        name: "24 Aug 2023",
+        first_name: "James",
+        last_name: "Wilson",
+        email: "james.wilson@example.com",
+        status: "Subscribed",
+      }
+    ],
   }),
   getters: {},
   actions: {
@@ -44,7 +170,7 @@ export const useCounterStore = defineStore("counter", {
       try {
         const response = await api.post("/auth/login", user);
         console.log(response.data);
-        this.userRole = "root";
+        this.userRole = "admin";
         localStorage.setItem("token", response.data.token);
         // Redirect to appropriate dashboard based on user role
         this.profile = response.data.user;
@@ -454,8 +580,9 @@ export const useCounterStore = defineStore("counter", {
     },
     async New_Artcle(article, id) {
       try {
-        const response = await api.post(`/api/blog/add/${id}`, article);
-        this.article = response.data;
+        // const response = await api.post(`/api/blog/add/${id}`, article);
+        // this.article = response.data;
+        this.article.push(article)
         Notify.create({
           message: "You have successfully Added Article",
           color: "positive",
@@ -463,6 +590,7 @@ export const useCounterStore = defineStore("counter", {
           position: "top",
           timeout: 1000,
         });
+        this.router.push('/article')
       } catch (error) {
         console.error("Error:", error);
         Notify.create({

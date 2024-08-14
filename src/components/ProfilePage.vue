@@ -78,24 +78,6 @@ export default defineComponent({
     const bio = ref("Pakistani");
     const description = ref("A frontend Developer");
     const profile_image = ref("https://cdn.quasar.dev/img/boy-avatar.png");
-
-    onMounted(async () => {
-      try {
-        await store.profile;
-        // Populate the data from the store once it's available
-        firstName.value = store.profile.first_name;
-        lastName.value = store.profile.last_name;
-        age.value = store.profile.age;
-        email.value = store.profile.email;
-        phone.value = store.profile.phone;
-        bio.value = store.profile.bio;
-        description.value = store.profile.description;
-        profile_image.value = store.profile.profile_image;
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    });
-
     return {
       store,
       firstName,
