@@ -112,79 +112,79 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
-import { useCounterStore } from "src/stores/example-store";
-import { LocalStorage } from "quasar";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { useCounterStore } from "src/stores/example-store";
-const menu = [
-  {
-    icon: "eva-bar-chart-2-outline",
-    name: "Dashboard",
-    route: "/dashboard",
-  },
-  {
-    icon: "eva-file-text-outline",
-    name: "Article",
-    route: "/article",
-  },
-  {
-    icon: "eva-message-circle-outline",
-    name: "Chat ",
-    route: "/chat",
-  },
-];
-const other = [
-  {
-    icon: "eva-person-outline",
-    name: "Account",
-    route: "/accounts",
-  },
-];
-export default {
-  setup() {
-    const store = useCounterStore();
-    const route = useRouter();
-    const leftDrawerOpen = ref(false);
-    const activeIndex = ref(0);
-    const firstName = ref(null);
-    const lastName = ref(null);
+// import { onMounted } from "vue";
+// import { useCounterStore } from "src/stores/example-store";
+// // import { LocalStorage } from "quasar";
+// import { ref } from "vue";
+// import { useRouter } from "vue-router";
+// import { useCounterStore } from "src/stores/example-store";
+// const menu = [
+//   {
+//     icon: "eva-bar-chart-2-outline",
+//     name: "Dashboard",
+//     route: "/dashboard",
+//   },
+//   {
+//     icon: "eva-file-text-outline",
+//     name: "Article",
+//     route: "/article",
+//   },
+//   {
+//     icon: "eva-message-circle-outline",
+//     name: "Chat ",
+//     route: "/chat",
+//   },
+// ];
+// const other = [
+//   {
+//     icon: "eva-person-outline",
+//     name: "Account",
+//     route: "/accounts",
+//   },
+// ];
+// export default {
+//   setup() {
+    // const store = useCounterStore();
+    // const route = useRouter();
+    // const leftDrawerOpen = ref(false);
+    // const activeIndex = ref(0);
+    // const firstName = ref(null);
+    // const lastName = ref(null);
 
-    function activateItem(index, router) {
-      activeIndex.value = index;
-      route.push(router);
-    }
-    function logout() {
-      localStorage.removeItem("token");
-      route.push("/");
-    }
-    onMounted(async () => {
-      try {
-        await store.Get_Profile();
-        // Populate the data from the store once it's available
-        firstName.value = store.profile.first_name;
-        lastName.value = store.profile.last_name;
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    });
-    return {
-      store,
-      activeIndex,
-      activateItem,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-      menu,
-      other,
-      logout,
-      store,
-      firstName,
-      lastName,
-    };
-  },
-};
+    // function activateItem(index, router) {
+    //   activeIndex.value = index;
+    //   route.push(router);
+    // }
+    // function logout() {
+    //   localStorage.removeItem("token");
+    //   route.push("/");
+    // }
+    // onMounted(async () => {
+    //   try {
+    //     await store.Get_Profile();
+    //     // Populate the data from the store once it's available
+    //     firstName.value = store.profile.first_name;
+    //     lastName.value = store.profile.last_name;
+    //   } catch (error) {
+    //     console.error("Error fetching profile data:", error);
+    //   }
+    // });
+    // return {
+    //   store,
+    //   activeIndex,
+    //   activateItem,
+    //   toggleLeftDrawer() {
+    //     leftDrawerOpen.value = !leftDrawerOpen.value;
+    //   },
+    //   menu,
+    //   other,
+    //   logout,
+    //   store,
+    //   firstName,
+    //   lastName,
+    // };
+//   },
+// };
 </script>
 <style>
 .active {

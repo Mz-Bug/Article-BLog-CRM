@@ -14,7 +14,7 @@ const routes = [
   // Paths for Super admin layout
   {
     path: "/admin-dashboard",
-    meta: { role: "root" },
+    // meta: { role: "root" },
     component: () => import("layouts/AdminLayout.vue"),
     children: [
       {
@@ -39,7 +39,7 @@ const routes = [
   // Paths for normal user/ admin
   {
     path: "/user-dashboard",
-    meta: { role: "admin" },
+    // meta: { role: "admin" },
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {

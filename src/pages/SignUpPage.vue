@@ -14,12 +14,7 @@
             </q-img>
             <span class="q-pl-sm">Login with Google</span>
           </q-btn>
-          <q-btn
-            no-caps
-            unelevated
-            class="text-white"
-            style="background-color: #3c5a9a"
-          >
+          <q-btn no-caps unelevated class="text-white" style="background-color: #3c5a9a">
             <q-img :src="require('assets/facebook.svg')" style="width: 20px">
             </q-img>
             <span class="q-pl-sm">Login with Facebook</span>
@@ -35,62 +30,29 @@
         <q-card-section>
           <!-- input firstname lastname  -->
           <div class="row q-gutter-sm">
-            <q-input
-              class="q-mt-xs col"
-              dense
-              outlined
-              v-model="firstName"
-              label="First Name"
-              type="text"
-              :rules="[
-                (val) => (val && val.length > 0) || 'This field is required',
-              ]"
-            >
+            <q-input class="q-mt-xs col" dense outlined v-model="firstName" label="First Name" type="text" :rules="[
+              (val) => (val && val.length > 0) || 'This field is required',
+            ]">
             </q-input>
-            <q-input
-              class="q-mt-xs col"
-              dense
-              outlined
-              v-model="lastName"
-              label="Last Name"
-              type="text"
-              :rules="[
-                (val) => (val && val.length > 0) || 'This field is required',
-              ]"
-            >
+            <q-input class="q-mt-xs col" dense outlined v-model="lastName" label="Last Name" type="text" :rules="[
+              (val) => (val && val.length > 0) || 'This field is required',
+            ]">
             </q-input>
           </div>
 
           <!-- input age -->
           <div>
-            <q-input
-              class="q-mt-xs"
-              dense
-              outlined
-              type="number"
-              v-model="age"
-              label="Age"
-              lazy-rules
-              :rules="[
-                (val) => (val !== null && val !== '') || 'Please type your age',
-                (val) => (val > 0 && val < 1000) || 'Please type a real age',
-              ]"
-            />
+            <q-input class="q-mt-xs" dense outlined type="number" v-model="age" label="Age" lazy-rules :rules="[
+              (val) => (val !== null && val !== '') || 'Please type your age',
+              (val) => (val > 0 && val < 1000) || 'Please type a real age',
+            ]" />
           </div>
 
           <!-- input email -->
           <div>
-            <q-input
-              class="q-mt-xs"
-              dense
-              outlined
-              v-model="email"
-              label="Email"
-              type="text"
-              :rules="[
-                (val) => (val && val.length > 0) || 'This field is required',
-              ]"
-            >
+            <q-input class="q-mt-xs" dense outlined v-model="email" label="Email" type="text" :rules="[
+              (val) => (val && val.length > 0) || 'This field is required',
+            ]">
               <template v-slot:prepend>
                 <q-icon name="mail" />
               </template>
@@ -99,17 +61,9 @@
 
           <!-- input phone and profile picture  -->
           <div class="row q-gutter-sm">
-            <q-input
-              class="q-mt-xs col"
-              dense
-              outlined
-              v-model="phone"
-              label="Phone"
-              type="phone"
-              :rules="[
-                (val) => (val && val.length > 0) || 'This field is required',
-              ]"
-            >
+            <q-input class="q-mt-xs col" dense outlined v-model="phone" label="Phone" type="phone" :rules="[
+              (val) => (val && val.length > 0) || 'This field is required',
+            ]">
               <template v-slot:prepend>
                 <q-icon name="phone_iphone" />
               </template>
@@ -132,69 +86,36 @@
 
           <!-- input password -->
           <div>
-            <q-input
-              class="q-mt-xs"
-              label="Password"
-              dense
-              outlined
-              v-model="password1"
-              :type="passwordFieldType"
+            <q-input class="q-mt-xs" label="Password" dense outlined v-model="password1" :type="passwordFieldType"
               :rules="[
                 (val) => (val && val.length > 0) || 'This field is required',
-              ]"
-            >
+              ]">
               <template v-slot:prepend>
                 <q-icon name="eva-lock-outline" color="blue-grey-4" />
               </template>
               <template v-slot:append>
-                <q-icon
-                  :name="
-                    passwordFieldType === 'password'
-                      ? 'eva-eye-off-outline'
-                      : 'eva-eye-outline'
-                  "
-                  color="blue-grey-4"
-                  @click="togglePasswordVisibility"
-                  style="cursor: pointer"
-                />
+                <q-icon :name="passwordFieldType === 'password'
+                    ? 'eva-eye-off-outline'
+                    : 'eva-eye-outline'
+                  " color="blue-grey-4" @click="togglePasswordVisibility" style="cursor: pointer" />
               </template>
             </q-input>
           </div>
 
           <!-- terms and conditions chexkbox -->
-          <q-checkbox
-            v-model="purple"
-            label="I agree Terms and conditions"
-            color="teal"
-          />
+          <q-checkbox v-model="purple" label="I agree Terms and conditions" color="teal" />
         </q-card-section>
 
         <!-- Sign up button -->
         <q-card-actions vertical align="center">
-          <q-btn
-            color="purple"
-            no-caps
-            class="full-width"
-            type="submit"
-            label="Sign Up"
-          />
+          <q-btn color="purple" no-caps class="full-width" type="submit" label="Sign Up" />
           <!-- @click="login" -->
         </q-card-actions>
 
         <!-- login button for existing account -->
-        <q-card-section
-          class="q-pt-none q-pb-none text-center text-weight-bold"
-        >
+        <q-card-section class="q-pt-none q-pb-none text-center text-weight-bold">
           I have already acoount
-          <q-btn
-            dense
-            no-caps
-            flat
-            unelvated
-            class="text-warning"
-            label="Login"
-            to="/"
-          />
+          <q-btn dense no-caps flat unelvated class="text-warning" label="Login" to="/" />
         </q-card-section>
       </q-form>
     </q-card>

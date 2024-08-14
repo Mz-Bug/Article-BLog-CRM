@@ -14,12 +14,7 @@
             </q-img>
             <span class="q-pl-sm">Login with Google</span>
           </q-btn>
-          <q-btn
-            no-caps
-            unelevated
-            class="text-white"
-            style="background-color: #3c5a9a"
-          >
+          <q-btn no-caps unelevated class="text-white" style="background-color: #3c5a9a">
             <q-img :src="require('assets/facebook.svg')" style="width: 20px">
             </q-img>
             <span class="q-pl-sm">Login with Facebook</span>
@@ -32,21 +27,14 @@
 
       <!-- Login Form -->
       <q-form @submit="login">
-        
+
         <!-- Input Email -->
         <q-card-section>
           <div>Email Address</div>
           <div>
-            <q-input
-              class="q-mt-sm"
-              dense
-              outlined
-              v-model="email"
-              type="text"
-              :rules="[
-                (val) => (val && val.length > 0) || 'This field is required',
-              ]"
-            >
+            <q-input class="q-mt-sm" dense outlined v-model="email" type="text" :rules="[
+              (val) => (val && val.length > 0) || 'This field is required',
+            ]">
               <template v-slot:prepend>
                 <q-icon name="eva-email-outline" color="blue-grey-4" />
               </template>
@@ -58,31 +46,19 @@
         <q-card-section class="q-pt-none">
           <div>Password</div>
           <div>
-            <q-input
-              dense
-              outlined
-              v-model="password1"
-              :type="passwordFieldType"
-              :rules="[
-                (val) => (val && val.length > 0) || 'This field is required',
-              ]"
-            >
+            <q-input dense outlined v-model="password1" :type="passwordFieldType" :rules="[
+              (val) => (val && val.length > 0) || 'This field is required',
+            ]">
               <template v-slot:prepend>
                 <q-icon name="eva-lock-outline" color="blue-grey-4" />
               </template>
 
               <!-- Hidden Password button -->
               <template v-slot:append>
-                <q-icon
-                  :name="
-                    passwordFieldType === 'password'
-                      ? 'eva-eye-off-outline'
-                      : 'eva-eye-outline'
-                  "
-                  color="blue-grey-4"
-                  @click="togglePasswordVisibility"
-                  style="cursor: pointer"
-                />
+                <q-icon :name="passwordFieldType === 'password'
+                  ? 'eva-eye-off-outline'
+                  : 'eva-eye-outline'
+                  " color="blue-grey-4" @click="togglePasswordVisibility" style="cursor: pointer" />
               </template>
             </q-input>
           </div>
@@ -91,33 +67,14 @@
         <!-- Forget Password Button -->
         <q-card-section class="q-pt-none">
           Forgot Password?
-          <q-btn
-            dense
-            no-caps
-            flat
-            unelvated
-            class="text-warning"
-            label="Click Here"
-          />
+          <q-btn dense no-caps flat unelvated class="text-warning" label="Click Here" />
         </q-card-section>
 
         <!-- Login Button and create account link -->
         <q-card-actions vertical align="center">
-          <q-btn
-            color="purple"
-            no-caps
-            class="full-width"
-            type="submit"
-            label="Login"
-          />
+          <q-btn color="purple" no-caps class="full-width" type="submit" label="Login" />
 
-          <q-btn
-            flat
-            no-caps
-            class="full-width text-purple"
-            label="Create an Account"
-            to="/signup"
-          />
+          <q-btn flat no-caps class="full-width text-purple" label="Create an Account" to="/signup" />
         </q-card-actions>
       </q-form>
     </q-card>
@@ -131,9 +88,9 @@ import { ref } from "vue";
 import { useCounterStore } from "../stores/example-store";
 export default {
   setup() {
-    const email = ref("");
+    const email = ref("emilys");
     const Password = ref("");
-    const password1 = ref("");
+    const password1 = ref("emilyspass");
     const passwordFieldType = ref("password");
     const store = useCounterStore();
     function togglePasswordVisibility() {
@@ -142,10 +99,13 @@ export default {
     }
     function login() {
       const formData = new FormData();
-      formData.append("email", email.value);
-      formData.append("password", password1.value);
+      // formData.append("email", email.value);
+      // formData.append("password", password1.value);
 
-      store.User_Login(formData);
+      store.User_Login({
+        username: email.value,
+        password: password1.value
+      });
     }
     return {
       email,

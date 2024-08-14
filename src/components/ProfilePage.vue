@@ -22,11 +22,7 @@
 
             <q-card-section class="col-5 flex flex-center">
               <!-- Conditionally render user image -->
-              <q-img
-                v-if="profile_image"
-                class="rounded-borders"
-                :src="profile_image"
-              />
+              <q-img v-if="profile_image" class="rounded-borders" :src="profile_image" />
               <div v-else>Loading...</div>
             </q-card-section>
           </q-card-section>
@@ -74,14 +70,14 @@ import { useCounterStore } from "src/stores/example-store";
 export default defineComponent({
   setup() {
     const store = useCounterStore();
-    const firstName = ref(null);
-    const lastName = ref(null);
-    const age = ref(null);
-    const email = ref(null);
-    const phone = ref(null);
-    const bio = ref(null);
-    const description = ref(null);
-    const profile_image = ref(null);
+    const firstName = ref("Maaz");
+    const lastName = ref("Ali");
+    const age = ref("20");
+    const email = ref("abc@gmail.com");
+    const phone = ref("+92 243347473");
+    const bio = ref("Pakistani");
+    const description = ref("A frontend Developer");
+    const profile_image = ref("https://cdn.quasar.dev/img/boy-avatar.png");
 
     onMounted(async () => {
       try {
@@ -115,5 +111,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

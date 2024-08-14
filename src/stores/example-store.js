@@ -40,11 +40,12 @@ export const useCounterStore = defineStore("counter", {
       }
     },
     async User_Login(user) {
+
       try {
-        const response = await api.post("/api/login", user);
+        const response = await api.post("/auth/login", user);
         console.log(response.data);
-        this.userRole = response.data.user.role.name;
-        localStorage.setItem("token", response.data.Bearer);
+        this.userRole = "root";
+        localStorage.setItem("token", response.data.token);
         // Redirect to appropriate dashboard based on user role
         this.profile = response.data.user;
         if (this.userRole === "root") {

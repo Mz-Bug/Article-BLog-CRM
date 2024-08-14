@@ -35,30 +35,30 @@ export default route(function (/* { store, ssrContext } */) {
       process.env.MODE === "ssr" ? void 0 : process.env.VUE_ROUTER_BASE
     ),
   });
-  Router.beforeEach((to, from, next) => {
-    // const token = localStorage.getItem("token");
-    const store = useCounterStore(); // Assuming this gets your store instance
-    const requiresAuth = to.matched.some((record) => record.meta.role);
+  // Router.beforeEach((to, from, next) => {
+  //   // const token = localStorage.getItem("token");
+  //   const store = useCounterStore(); // Assuming this gets your store instance
+  //   const requiresAuth = to.matched.some((record) => record.meta.role);
 
-    if (requiresAuth) {
-      if (store.userRole === "admin") {
-        if (to.meta.role === "admin") {
-          next();
-        } else {
-          next("/user-dashboard");
-        }
-      } else if (store.userRole === "root") {
-        if (to.meta.role === "root") {
-          next();
-        } else {
-          next("/admin-dashboard");
-        }
-      } else {
-        next("/"); // Redirect to login or appropriate route
-      }
-    } else {
-      next();
-    }
-  });
+  //   if (requiresAuth) {
+  //     if (store.userRole === "admin") {
+  //       if (to.meta.role === "admin") {
+  //         next();
+  //       } else {
+  //         next("/user-dashboard");
+  //       }
+  //     } else if (store.userRole === "root") {
+  //       if (to.meta.role === "root") {
+  //         next();
+  //       } else {
+  //         next("/admin-dashboard");
+  //       }
+  //     } else {
+  //       next("/"); // Redirect to login or appropriate route
+  //     }
+  //   } else {
+  //     next();
+  //   }
+  // });
   return Router;
 });
