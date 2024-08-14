@@ -1,102 +1,42 @@
 <template>
   <q-page class="q-pa-lg">
     <q-card>
-      <q-table
-        title="Roles"
-        :rows="store.roles"
-        :hide-header="mode === 'grid'"
-        :columns="columns"
-        row-key="name"
-        :grid="mode == 'grid'"
-        :filter="filter"
-        :pagination="initialPagination"
-        class="q-pa-md"
-        no-data-label="I didn't find anything for you"
-        :visible-columns="visibleColumns"
-      >
+      <q-table title="Roles" :rows="store.roles" :hide-header="mode === 'grid'" :columns="columns" row-key="name"
+        :grid="mode == 'grid'" :filter="filter" :pagination="initialPagination" class="q-pa-md"
+        no-data-label="I didn't find anything for you" :visible-columns="visibleColumns">
         <template v-slot:top-right="props">
-          <q-btn
-            @click="new_user"
-            outline
-            color="primary"
-            label="Add New"
-            class="q-mr-xs q-pa-sm q-px-sm"
-          />
-          <q-select
-            class="q-mr-xs"
-            v-model="visibleColumns"
-            multiple
-            outlined
-            dense
-            options-dense
-            :display-value="$q.lang.table.columns"
-            emit-value
-            map-options
-            :options="columns"
-            option-value="name"
-            options-cover
-            style="min-width: 150px"
-          />
-          <q-input
-            outlined
-            dense
-            debounce="300"
-            v-model="filter"
-            placeholder="Search"
-          >
+          <q-btn @click="new_user" outline color="primary" label="Add New" class="q-mr-xs q-pa-sm q-px-sm" />
+          <q-select class="q-mr-xs" v-model="visibleColumns" multiple outlined dense options-dense
+            :display-value="$q.lang.table.columns" emit-value map-options :options="columns" option-value="name"
+            options-cover style="min-width: 150px" />
+          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
 
-          <q-btn
-            flat
-            round
-            dense
-            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-            @click="props.toggleFullscreen"
-            v-if="mode === 'list'"
-          >
-            <q-tooltip :disable="$q.platform.is.mobile" v-close-popup
-              >{{
-                props.inFullscreen ? "Exit Fullscreen" : "Toggle Fullscreen"
+          <q-btn flat round dense :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="props.toggleFullscreen" v-if="mode === 'list'">
+            <q-tooltip :disable="$q.platform.is.mobile" v-close-popup>{{
+              props.inFullscreen ? "Exit Fullscreen" : "Toggle Fullscreen"
               }}
             </q-tooltip>
           </q-btn>
 
-          <q-btn
-            flat
-            round
-            dense
-            :icon="mode === 'grid' ? 'list' : 'grid_on'"
-            @click="
-              mode = mode === 'grid' ? 'list' : 'grid';
-              separator = mode === 'grid' ? 'none' : 'horizontal';
-            "
-            v-if="!props.inFullscreen"
-          >
-            <q-tooltip :disable="$q.platform.is.mobile" v-close-popup
-              >{{ mode === "grid" ? "List" : "Grid" }}
+          <q-btn flat round dense :icon="mode === 'grid' ? 'list' : 'grid_on'" @click="
+            mode = mode === 'grid' ? 'list' : 'grid';
+          separator = mode === 'grid' ? 'none' : 'horizontal';
+          " v-if="!props.inFullscreen">
+            <q-tooltip :disable="$q.platform.is.mobile" v-close-popup>{{ mode === "grid" ? "List" : "Grid" }}
             </q-tooltip>
           </q-btn>
 
-          <q-btn
-            color="primary"
-            icon-right="archive"
-            label="Export to csv"
-            no-caps
-            @click="exportTable"
-          />
+          <q-btn color="primary" icon-right="archive" label="Export to csv" no-caps @click="exportTable" />
         </template>
         <template v-slot:header="props">
           <q-tr :props="props">
-            <q-th
-              style="background-color: #5041bc"
-              v-for="col in props.cols"
-              :key="col.name"
-              :props="props"
-              class="text-purple"
-            >
+            <q-th style="background-color: #5041bc" v-for="col in props.cols" :key="col.name" :props="props"
+              class="text-purple">
               <span class="text-body1 text-white">{{ col.label }}</span>
             </q-th>
           </q-tr>
@@ -104,22 +44,9 @@
 
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
-            <q-btn
-              flat
-              size="md"
-              color="primary"
-              icon="edit"
-              @click="EditRow(props.row)"
-            />
+            <q-btn flat size="md" color="primary" icon="edit" @click="EditRow(props.row)" />
 
-            <q-btn
-              class="q-pa-none"
-              color="red"
-              flat
-              size="md"
-              icon="delete"
-              @click="deleteRow(props.row)"
-            />
+            <q-btn class="q-pa-none" color="red" flat size="md" icon="delete" @click="deleteRow(props.row)" />
           </q-td>
         </template>
         <template v-slot:no-data="{ icon, message, filter }">
@@ -136,15 +63,7 @@
         <q-card-section>
           <div class="text-h6">
             Add new Role
-            <q-btn
-              round
-              flat
-              dense
-              icon="close"
-              class="float-right"
-              color="grey-8"
-              v-close-popup
-            ></q-btn>
+            <q-btn round flat dense icon="close" class="float-right" color="grey-8" v-close-popup></q-btn>
           </div>
         </q-card-section>
         <q-separator inset></q-separator>
@@ -154,45 +73,26 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-py-sm">User Role</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="fname"
-                    placeholder="Enter User Role"
-                    :rules="[
-                      (val) =>
-                        (val && val.length > 0) || 'This field is required',
-                    ]"
-                  />
+                  <q-input dense outlined v-model="fname" placeholder="Enter User Role" :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]" />
                 </q-item-section>
               </q-item>
               <q-item class="q-pt-none">
                 <q-item-section>
                   <q-item-label class="q-pb-sm">Role Description</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="lname"
-                    placeholder="Enter Role Description"
-                    :rules="[
-                      (val) =>
-                        (val && val.length > 0) || 'This field is required',
-                    ]"
-                  />
+                  <q-input dense outlined v-model="lname" placeholder="Enter Role Description" :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]" />
                 </q-item-section>
               </q-item>
             </q-list>
           </q-form>
         </q-card-section>
         <q-card-actions align="right" class="text-teal">
-          <q-btn
-            class="q-mx-md q-mb-md"
-            label="Save"
-            type="submit"
-            color="primary"
-            v-close-popup
-            @click="addRole"
-          />
+          <q-btn class="q-mx-md q-mb-md" label="Save" type="submit" color="primary" v-close-popup @click="addRole" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -201,15 +101,7 @@
         <q-card-section>
           <div class="text-h6">
             Add new Role
-            <q-btn
-              round
-              flat
-              dense
-              icon="close"
-              class="float-right"
-              color="grey-8"
-              v-close-popup
-            ></q-btn>
+            <q-btn round flat dense icon="close" class="float-right" color="grey-8" v-close-popup></q-btn>
           </div>
         </q-card-section>
         <q-separator inset></q-separator>
@@ -219,45 +111,27 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="q-py-sm">User Role</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="fname"
-                    placeholder="Enter User Role"
-                    :rules="[
-                      (val) =>
-                        (val && val.length > 0) || 'This field is required',
-                    ]"
-                  />
+                  <q-input dense outlined v-model="fname" placeholder="Enter User Role" :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]" />
                 </q-item-section>
               </q-item>
               <q-item class="q-pt-none">
                 <q-item-section>
                   <q-item-label class="q-pb-sm">Role Description</q-item-label>
-                  <q-input
-                    dense
-                    outlined
-                    v-model="lname"
-                    placeholder="Enter Role Description"
-                    :rules="[
-                      (val) =>
-                        (val && val.length > 0) || 'This field is required',
-                    ]"
-                  />
+                  <q-input dense outlined v-model="lname" placeholder="Enter Role Description" :rules="[
+                    (val) =>
+                      (val && val.length > 0) || 'This field is required',
+                  ]" />
                 </q-item-section>
               </q-item>
             </q-list>
           </q-form>
         </q-card-section>
         <q-card-actions align="right" class="text-teal">
-          <q-btn
-            class="q-mx-md q-mb-md"
-            label="Save"
-            type="submit"
-            color="primary"
-            v-close-popup
-            @click="update_role"
-          />
+          <q-btn class="q-mx-md q-mb-md" label="Save" type="submit" color="primary" v-close-popup
+            @click="update_role" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -271,12 +145,7 @@
 
         <q-card-actions align="right">
           <q-btn color="primary" label="Cancel" v-close-popup />
-          <q-btn
-            color="negative"
-            label="Delete"
-            @click="confirmDelete"
-            v-close-popup
-          />
+          <q-btn color="negative" label="Delete" @click="confirmDelete" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -306,20 +175,20 @@ const columns = [
     align: "center",
     label: "Description",
     field: "description",
-    format: (val) => {
-      const words = val.split(" ");
-      return words.slice(0, 4).join(" ");
-    },
+    // format: (val) => {
+    //   const words = val.split(" ");
+    //   return words.slice(0, 4).join(" ");
+    // },
   },
   {
     name: "phone",
     align: "center",
     label: "Created At",
     field: "created_at",
-    format: (val) => {
-      const date = new Date(val);
-      return date.toISOString().split("T")[0];
-    },
+    // format: (val) => {
+    //   const date = new Date(val);
+    //   return date.toISOString().split("T")[0];
+    // },
   },
   {
     name: "action",
@@ -412,9 +281,9 @@ export default {
       // console.log(rowData.id);
       store.Delete_Role(rowData.id);
     }
-    onMounted(() => {
-      store.GET_Roles();
-    });
+    // onMounted(() => {
+    //   store.GET_Roles();
+    // });
     function update_role() {
       const formData = new FormData();
       formData.append("id", rowData.id);

@@ -30,62 +30,169 @@ export const useCounterStore = defineStore("counter", {
         created_at: "2024-08-01"
       }
     ],
-    category:  [
-  {
-    id: 1,
-    name: "Technology",
-    created_at: "08-2-2022"
-  },
-  {
-    id: 2,
-    name: "Health",
-    created_at: "09-2-2022"
-  },
-  {
-    id: 3,
-    name: "Travel",
-    created_at: "18-2-2022"
-  },
-  {
-    id: 4,
-    name: "Education",
-    created_at: "10-2-2022"
-  },
-  {
-    id: 5,
-    name: "Finance",
-    created_at: "11-2-2022"
-  },
-  {
-    id: 6,
-    name: "Lifestyle",
-    created_at: "12-2-2022"
-  },
-  {
-    id: 7,
-    name: "Entertainment",
-    created_at: "13-2-2022"
-  },
-  {
-    id: 8,
-    name: "Food",
-    created_at: "4-2-2022"
-  },
-  {
-    id: 9,
-    name: "Sports",
-    created_at: "15-2-2022"
-  },
-  {
-    id: 10,
-    name: "Environment",
-    created_at: "16-2-2022"
-  }
-],
+    category: [
+      {
+        id: 1,
+        name: "Technology",
+        created_at: "08-2-2022"
+      },
+      {
+        id: 2,
+        name: "Health",
+        created_at: "09-2-2022"
+      },
+      {
+        id: 3,
+        name: "Travel",
+        created_at: "18-2-2022"
+      },
+      {
+        id: 4,
+        name: "Education",
+        created_at: "10-2-2022"
+      },
+      {
+        id: 5,
+        name: "Finance",
+        created_at: "11-2-2022"
+      },
+      {
+        id: 6,
+        name: "Lifestyle",
+        created_at: "12-2-2022"
+      },
+      {
+        id: 7,
+        name: "Entertainment",
+        created_at: "13-2-2022"
+      },
+      {
+        id: 8,
+        name: "Food",
+        created_at: "4-2-2022"
+      },
+      {
+        id: 9,
+        name: "Sports",
+        created_at: "15-2-2022"
+      },
+      {
+        id: 10,
+        name: "Environment",
+        created_at: "16-2-2022"
+      }
+    ],
     update: null,
-    roles: [],
-    Permissions: [],
-    User: [],
+    roles: [
+      {
+        id: "1",
+        name: "Admin",
+        description: "Admin user with full access",
+        created_at: "16-02-2022",
+      },
+      {
+        id: "2",
+        name: "Moderator",
+        description: "Moderator user with limited administrative privileges",
+        created_at: "20-03-2022",
+      },
+      {
+        id: "3",
+        name: "User",
+        description: "Regular user with standard access",
+        created_at: "25-04-2022",
+      },
+      {
+        id: "4",
+        name: "Guest",
+        description: "Guest user with read-only access",
+        created_at: "01-05-2022",
+      }
+    ],
+    Permissions: [
+      {
+        access_control_id: "1",
+        name: "Read Access",
+        description: "Allows users to view content.",
+        created_at: "16-02-2022"
+      },
+      {
+        access_control_id: "2",
+        name: "Write Access",
+        description: "Allows users to modify or add content.",
+        created_at: "20-03-2022"
+      },
+      {
+        access_control_id: "3",
+        name: "Delete Access",
+        description: "Allows users to delete content.",
+        created_at: "25-04-2022"
+      },
+      {
+        access_control_id: "4",
+        name: "Admin Access",
+        description: "Full control over the system, including user management.",
+        created_at: "01-05-2022"
+      }
+    ],
+    User: [
+      {
+        name: "20 Aug 2023",
+        first_name: "John",
+        last_name: "Doe",
+        email: "john.doe@example.com",
+        created_at: "16-02-2022",
+        phone: "+92 23423546"
+      },
+      {
+        name: "25 Aug 2023",
+        first_name: "Jane",
+        last_name: "Smith",
+        email: "jane.smith@example.com",
+        created_at: "20-03-2022",
+        phone: "+92 34567890"
+      },
+      {
+        name: "30 Aug 2023",
+        first_name: "Michael",
+        last_name: "Johnson",
+        email: "michael.johnson@example.com",
+        created_at: "05-01-2023",
+        phone: "+92 45678901"
+      },
+      {
+        name: "10 Sep 2023",
+        first_name: "Emily",
+        last_name: "Davis",
+        email: "emily.davis@example.com",
+        created_at: "12-04-2022",
+        phone: "+92 56789012"
+      },
+      {
+        name: "15 Sep 2023",
+        first_name: "David",
+        last_name: "Brown",
+        email: "david.brown@example.com",
+        created_at: "22-07-2022",
+        phone: "+92 67890123"
+      },
+      {
+        name: "20 Sep 2023",
+        first_name: "Sophia",
+        last_name: "Miller",
+        email: "sophia.miller@example.com",
+        created_at: "30-08-2022",
+        phone: "+92 78901234"
+      },
+      {
+        name: "25 Sep 2023",
+        first_name: "James",
+        last_name: "Wilson",
+        email: "james.wilson@example.com",
+        created_at: "14-09-2022",
+        phone: "+92 89012345"
+      }
+    ],
     profile: null,
     coumunity: [
       {
